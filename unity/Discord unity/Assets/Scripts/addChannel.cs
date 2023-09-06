@@ -6,19 +6,19 @@ using UnityEngine.Networking;
 public class addChannel : MonoBehaviour
 {
     public string apiUrl = "http://localhost:3001/api/guilds/channels/482690190838857730";
-    public GameObject prefabToSpawn; // El prefab que deseas instanciar
+    public GameObject prefabToSpawn;
+    public GameObject parentObject;
 
     [System.Serializable]
     public class ChannelData
     {
-        public string name; // Supongamos que cada objeto en el array tiene un campo "name"
-        // Otros campos que puedas tener en los objetos
+        public string name;
     }
 
     [System.Serializable]
     public class ChannelsData
     {
-        public List<ChannelData> channels; // Usa la clase ChannelData para representar los objetos en el array
+        public List<ChannelData> channels;
     }
 
     void Start()
@@ -51,10 +51,11 @@ public class addChannel : MonoBehaviour
             string channelName = channel.name;
             Debug.Log("Nombre del canal: " + channelName);
             Vector2 position = new Vector2(vectorY, vectorX);
-            Instantiate(prefabToSpawn, position, Quaternion.identity);
+            GameObject prefabInstance = Instantiate(prefabToSpawn, position, Quaternion.identity);
+            prefabInstance.transform.parent = parentObject.transform;
 
-            vectorY -= 4.3f;
-            vectorX -= 2.5f;
+            vectorY -= 3f;
+            vectorX -= 2f;
         }
     }
 }
