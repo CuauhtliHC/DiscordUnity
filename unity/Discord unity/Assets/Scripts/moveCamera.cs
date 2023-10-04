@@ -1,29 +1,38 @@
 using UnityEngine;
 
-public class moveCamera : MonoBehaviour
+public class MoveCamera : MonoBehaviour
 {
-    private Vector3 lastMousePosition;
-    private Camera mainCamera;
+    private Vector3 Origin;
+    private Vector3 Difference;
+
+    private bool drag = false;
+
 
     public float sensitivity = 2.0f;
 
     void Start()
     {
-        mainCamera = Camera.main;
-        lastMousePosition = Input.mousePosition;
     }
 
     void Update()
     {
         if (Input.GetMouseButton(0))
         {
-            Vector3 mouseDelta = Input.mousePosition - lastMousePosition;
-
-            Vector3 cameraMove = mainCamera.ScreenToWorldPoint(Vector3.zero) - mainCamera.ScreenToWorldPoint(mouseDelta);
-
-            mainCamera.transform.Translate(cameraMove * sensitivity);
-
-            lastMousePosition = Input.mousePosition;
+            Difference = (Camera.main.ScreenToWorldPoint(Input.mousePosition)) - Camera.main.transform.position;
+            if (drag == false)
+            {
+                drag = true;
+                Origin = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            }
         }
+        else
+        {
+            drag = false;
+        }
+        if(drag)
+        {
+            Camera.main.transform.position = Origin - Difference;
+        }
+
     }
 }

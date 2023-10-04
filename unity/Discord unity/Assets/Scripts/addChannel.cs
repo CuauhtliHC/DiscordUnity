@@ -1,61 +1,157 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Networking;
+using Newtonsoft.Json;
 
-public class addChannel : MonoBehaviour
+public class AddChannel : MonoBehaviour
 {
-    public string apiUrl = "http://localhost:3001/api/guilds/channels/482690190838857730";
+    private Queue<ChannelData> channelsQueue = new Queue<ChannelData>();
+    private Queue<ChannelsWithUsers> listChannelsUsers = new Queue<ChannelsWithUsers>();
+    private ConnectionWebSocket webSocket;
+    private UserSpawn userSpawn;
+
     public GameObject prefabToSpawn;
     public GameObject parentObject;
+    public GameObject prefabCharacter;
 
     [System.Serializable]
     public class ChannelData
     {
+        public string id;
         public string name;
+    }
+    public class ChannelsWithUsers
+    {
+        public string channelId;
+        public string channelName;
+        public List<User> users;
+    }
+
+    public class User
+    {
+        public string UserName;
+        public string UserId;
     }
 
     [System.Serializable]
     public class ChannelsData
     {
         public List<ChannelData> channels;
+        public string type;
+        public List<ChannelsWithUsers> usersOnline;
     }
+
 
     void Start()
     {
-        StartCoroutine(LoadJSONAndSpawnObjects());
+        userSpawn = FindObjectOfType<UserSpawn>();
+        if (userSpawn == null)
+        {
+            Debug.LogError("No se encontró un objeto UserSpawn en la escena.");
+        }
+        ConnectionWebSocket.OnMessageReceived += HandleWebSocketMessage;
+        webSocket = FindObjectOfType<ConnectionWebSocket>();
+
+        if (webSocket != null)
+        {
+            webSocket.OnWebSocketOpen += () =>
+            {
+                var data = new
+                {
+                    //482690190838857730
+                    //309462354004017152
+                    //1087941237924966420
+                    message = "getChannels",
+                    guildID = "1087941237924966420",
+                    userID = "278345841734057994"
+                };
+                string requestData = JsonConvert.SerializeObject(data);
+                webSocket.SendMessageToWebSocket(requestData);
+            };
+        }
+        else
+        {
+            Debug.LogError("No se encontró un objeto connectionWebSocket en la escena.");
+        }
     }
 
-    IEnumerator LoadJSONAndSpawnObjects()
+    private void Update()
     {
-        UnityWebRequest www = UnityWebRequest.Get(apiUrl);
-        yield return www.SendWebRequest();
+        InstantiateChannel();
+        InstantiateUser();
+    }
 
-        if (www.result != UnityWebRequest.Result.Success)
-        {
-            Debug.LogError("Error al cargar el JSON desde la API: " + www.error);
-            yield break;
+    private void HandleWebSocketMessage(string message)
+    {
+        ChannelsData channelsData = JsonConvert.DeserializeObject<ChannelsData>(message);
+        if(channelsData.type == "channels") {
+            foreach (ChannelData channel in channelsData.channels)
+            {
+                channelsQueue.Enqueue(channel);
+            }
+            if (channelsData.usersOnline != null && channelsData.usersOnline.Count > 0)
+            {
+                foreach (ChannelsWithUsers channelWithUsers in channelsData.usersOnline)
+                {
+                    listChannelsUsers.Enqueue(channelWithUsers);
+                }
+            }
+            else
+            {
+                Debug.Log("La lista de usuarios en línea está vacía o nula.");
+            }
         }
+    }
 
-        string json = www.downloadHandler.text;
-
-        ChannelsData channelsData = JsonUtility.FromJson<ChannelsData>(json);
-
-        List<ChannelData> channels = channelsData.channels;
-
-        float vectorY = 0;
-        float vectorX = 0;
-
-        foreach (ChannelData channel in channels)
+    private void InstantiateChannel()
+    {
+        float vectorY = 0, vectorX = 0;
+        try
         {
-            string channelName = channel.name;
-            Debug.Log("Nombre del canal: " + channelName);
-            Vector2 position = new Vector2(vectorY, vectorX);
-            GameObject prefabInstance = Instantiate(prefabToSpawn, position, Quaternion.identity);
-            prefabInstance.transform.parent = parentObject.transform;
+            while (channelsQueue.Count > 0)
+            {
+                ChannelData channel = channelsQueue.Dequeue();
+                string channelName = channel.name;
+                Vector2 position = new Vector2(vectorY, vectorX);
+                GameObject prefabInstance = Instantiate(prefabToSpawn, position, Quaternion.identity);
+                prefabInstance.transform.parent = parentObject.transform;
+                prefabInstance.name = channel.id;
+                ChannelInfo channelData = prefabInstance.AddComponent<ChannelInfo>();
+                channelData.ChannelName = channel.name;
+                channelData.ChannelId = channel.id;
+                vectorY -= 3.492f;
+                vectorX -= 2.0096f;
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.Log("Error al crear la instancia: " + ex.Message);
+        }
+    }
 
-            vectorY -= 3f;
-            vectorX -= 2f;
+    private void InstantiateUser()
+    {
+        try
+        {
+            while (listChannelsUsers.Count > 0)
+            {
+                ChannelsWithUsers channelWithUsers = listChannelsUsers.Dequeue();
+                GameObject channel = GameObject.Find(channelWithUsers.channelId);
+
+                Vector2 cordinatesChannel = new Vector2(channel.transform.position.x, channel.transform.position.y - 0.7536f);
+                Grid grid = parentObject.GetComponent<Grid>();
+                Vector3Int cellPosition = grid.WorldToCell(cordinatesChannel);
+                Vector3 center = grid.GetCellCenterWorld(cellPosition);
+                Vector2 center2D = new Vector2(center.x, center.y);
+                foreach (User user in channelWithUsers.users)
+                {
+                    userSpawn.InstantiateUserPrefab(user.UserName, user.UserId, channelWithUsers.channelId, prefabCharacter, parentObject, center2D);
+                }                
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.Log("Error al crear la instancia: " + ex.Message);
         }
     }
 }
