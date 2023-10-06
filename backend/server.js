@@ -1,13 +1,11 @@
-const { Client, Events, GatewayIntentBits } = require('discord.js');
+const WebSocket = require('ws');
+const http = require('http');
 const dotenv = require('dotenv');
 const express = require('express');
 const app = express();
 const router = require('./routes');
 
 dotenv.config();
-const token = process.env.DISCORD_TOKEN;
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
-
 app.use(express.json());
 app.use('/api', router);
 
@@ -20,3 +18,13 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(3001, () => console.log('Servidor escuchando en el puerto 3001'));
+
+const server = http.createServer((request, response) => {});
+
+server.listen(8080, () => {
+  console.log('Servidor WebSocket está escuchando en el puerto 8080');
+});
+
+const wsServer = new WebSocket.Server({ server });
+
+module.exports = { server, wsServer };

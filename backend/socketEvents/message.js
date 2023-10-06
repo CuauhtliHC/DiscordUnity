@@ -1,7 +1,7 @@
 const { session } = require('../session/session');
-const { getOnlineUsers } = require('../utils/channelUtils');
+const { getGuildChannels, getOnlineUsers } = require('../utils/discordUtils');
 
-const messageEvent = async (message, socket, getGuildChannels) => {
+const messageEvent = async (message, socket) => {
   try {
     const data = JSON.parse(message);
     if (data.message === 'getChannels' && data.guildID) {

@@ -62,7 +62,7 @@ public class AddChannel : MonoBehaviour
                     //309462354004017152
                     //1087941237924966420
                     message = "getChannels",
-                    guildID = "1087941237924966420",
+                    guildID = "309462354004017152",
                     userID = "278345841734057994"
                 };
                 string requestData = JsonConvert.SerializeObject(data);
