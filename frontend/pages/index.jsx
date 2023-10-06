@@ -4,7 +4,7 @@ import ListGuilds from '../components/listGuilds/listGuilds.jsx';
 import NavBar from '../components/navBar/navBar.jsx';
 import Login from '../components/login/login.jsx';
 
-export default function Component() {
+const LoginPage = () => {
   const { data } = useSession();
 
   return (
@@ -30,4 +30,6 @@ export default function Component() {
       )}
     </>
   );
-}
+};
+
+export default LoginPage;

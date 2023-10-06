@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 const CardServer = ({ guild }) => {
   return (
-    <Link href={`/guild/${guild.id}`}>
+    <Link href={`/guild?id=${guild.id}`}>
       <div className="min-h-full relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">
         <img
           className="w-20 h-20 object-cover object-center rounded-full"
