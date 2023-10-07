@@ -1,8 +1,8 @@
 import Head from 'next/head';
 import { useSession } from 'next-auth/react';
-import ListGuilds from '../components/listGuilds/listGuilds.jsx';
-import NavBar from '../components/navBar/navBar.jsx';
-import Login from '../components/login/login.jsx';
+import ListGuilds from '@/components/listGuilds/listGuilds.jsx';
+import NavBar from '@/components/navBar/navBar.jsx';
+import Login from '@/components/login/login.jsx';
 
 const LoginPage = () => {
   const { data } = useSession();

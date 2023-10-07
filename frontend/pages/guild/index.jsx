@@ -2,7 +2,8 @@ import { useSession } from 'next-auth/react';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { getGuilds } from '../../utils/getGuilds';
+import { botInGuild, getGuilds } from '@/utils/axiosGet';
+import Game from '@/components/game/game';
 
 const GuildPage = () => {
   const router = useRouter();
@@ -12,20 +13,29 @@ const GuildPage = () => {
   const [arrayGuilds, setArrayGuilds] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const accessToken = data?.accessToken;
+  const [serverOnBot, setServerOnBot] = useState(false);
+
+  const guildFound = arrayGuilds?.some((guild) => guild.id === idGuild);
 
   useEffect(() => {
-    if (data) getGuilds(accessToken, setArrayGuilds);
+    if (!data) {
+      router.push('/');
+    }
+
+    if (data && !guildFound) getGuilds(accessToken, setArrayGuilds);
     setTimeout(() => {
       setIsLoading(false);
     }, 2000);
-  }, [accessToken]);
+    if (guildFound) botInGuild(idGuild, setServerOnBot);
 
-  const guildNotFound = arrayGuilds?.some((guild) => guild.id === idGuild);
-
-  if (!isLoading && !guildNotFound) {
-    router.push('/404');
-    return null;
-  }
+    if (!isLoading && !guildFound) {
+      router.push('/404');
+    } else if (!isLoading && !serverOnBot) {
+      router.push(
+        'https://discord.com/api/oauth2/authorize?client_id=672281194087448606&permissions=8&scope=bot',
+      );
+    }
+  }, [accessToken, guildFound, isLoading]);
 
   return (
     <div
@@ -43,7 +53,7 @@ const GuildPage = () => {
           <span className="sr-only">Loading...</span>
         </div>
       ) : (
-        <></>
+        <>{serverOnBot && <Game />}</>
       )}
     </div>
   );

@@ -13,6 +13,7 @@ public class ConnectionWebSocket : MonoBehaviour
 
     private void Start()
     {
+        Debug.Log("Start");
         ws = new WebSocket(serverURL);
 
         ws.OnOpen += (sender, e) =>
@@ -29,6 +30,11 @@ public class ConnectionWebSocket : MonoBehaviour
         ws.OnMessage += (sender, e) =>
         {
             OnMessageReceived?.Invoke(e.Data);
+        };
+
+        ws.OnError += (sender, e) =>
+        {
+            Debug.LogError("Error en WebSocket: " + e.Message);
         };
 
         ws.Connect();

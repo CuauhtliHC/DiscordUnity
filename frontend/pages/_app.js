@@ -1,5 +1,5 @@
 import { SessionProvider } from 'next-auth/react';
-import '../styles/global.css';
+import '@/styles/global.css';
 
 export default function App({
   Component,

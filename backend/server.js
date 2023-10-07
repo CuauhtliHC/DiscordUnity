@@ -2,10 +2,17 @@ const WebSocket = require('ws');
 const http = require('http');
 const dotenv = require('dotenv');
 const express = require('express');
+const cors = require('cors');
 const app = express();
 const router = require('./routes');
 
 dotenv.config();
+app.use(
+  cors({
+    origin: 'http://localhost:3000',
+    credentials: true,
+  }),
+);
 app.use(express.json());
 app.use('/api', router);
 

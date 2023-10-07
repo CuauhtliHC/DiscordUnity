@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { getGuilds } from '../../utils/getGuilds';
-import CardServer from '../../commons/cardServer';
-import Skeleton from '../../commons/skeleton';
+import { getGuilds } from '@/utils/axiosGet';
+import CardServer from '@/commons/cardServer';
+import Skeleton from '@/commons/skeleton';
 
 const ListGuilds = ({ accessToken }) => {
   const [arrayGuilds, setArrayGuilds] = useState(null);
