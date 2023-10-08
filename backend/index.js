@@ -7,7 +7,7 @@ const { messageEvent } = require('./socketEvents/message');
 wsServer.on('connection', async (socket) => {
   console.log('New connection');
   socket.on('message', async (message) => {
-    await messageEvent(message, socket);
+    await messageEvent(Buffer.from(message).toString(), socket);
   });
 
   socket.on('close', closeConnection(socket));

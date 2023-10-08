@@ -47,32 +47,32 @@ public class AddChannel : MonoBehaviour
         userSpawn = FindObjectOfType<UserSpawn>();
         if (userSpawn == null)
         {
-            Debug.LogError("No se encontrÛ un objeto UserSpawn en la escena.");
+            Debug.LogError("No se encontr√≥ un objeto UserSpawn en la escena.");
         }
         ConnectionWebSocket.OnMessageReceived += HandleWebSocketMessage;
-        webSocket = FindObjectOfType<ConnectionWebSocket>();
+        //webSocket = FindObjectOfType<ConnectionWebSocket>();
 
-        if (webSocket != null)
-        {
-            webSocket.OnWebSocketOpen += () =>
-            {
-                var data = new
-                {
-                    //482690190838857730
-                    //309462354004017152
-                    //1087941237924966420
-                    message = "getChannels",
-                    guildID = "309462354004017152",
-                    userID = "278345841734057994"
-                };
-                string requestData = JsonConvert.SerializeObject(data);
-                webSocket.SendMessageToWebSocket(requestData);
-            };
-        }
-        else
-        {
-            Debug.LogError("No se encontrÛ un objeto connectionWebSocket en la escena.");
-        }
+        //if (webSocket != null)
+        //{
+        //    webSocket.OnWebSocketOpen += () =>
+        //    {
+        //        var data = new
+        //        {
+        //            //482690190838857730
+        //            //309462354004017152
+        //            //1087941237924966420
+        //            message = "getChannels",
+        //            guildID = "309462354004017152",
+        //            userID = "278345841734057994"
+        //        };
+        //        string requestData = JsonConvert.SerializeObject(data);
+        //        webSocket.SendMessageToWebSocket(requestData);
+        //    };
+        //}
+        //else
+        //{
+        //    Debug.LogError("No se encontr√≥ un objeto connectionWebSocket en la escena.");
+        //}
     }
 
     private void Update()
@@ -98,7 +98,7 @@ public class AddChannel : MonoBehaviour
             }
             else
             {
-                Debug.Log("La lista de usuarios en lÌnea est· vacÌa o nula.");
+                Debug.Log("La lista de usuarios en l√≠nea est√° vac√≠a o nula.");
             }
         }
     }

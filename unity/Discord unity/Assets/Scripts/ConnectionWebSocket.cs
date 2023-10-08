@@ -1,7 +1,8 @@
 using System;
 using UnityEngine;
-using WebSocketSharp;
+using NativeWebSocket;
 using Newtonsoft.Json;
+using System.Text.RegularExpressions;
 
 public class ConnectionWebSocket : MonoBehaviour
 {
@@ -11,45 +12,61 @@ public class ConnectionWebSocket : MonoBehaviour
     public static event Action<string> OnMessageReceived;
     public event Action OnWebSocketOpen;
 
-    private void Start()
+    async void Start()
     {
-        Debug.Log("Start");
         ws = new WebSocket(serverURL);
+        string[] paramsUrl = Regex.Split(Application.absoluteURL, "&");
+        string userId = paramsUrl[0].Split("="[0])[1];
+        string guildId = paramsUrl[1].Split("="[0])[1];
 
-        ws.OnOpen += (sender, e) =>
+        ws.OnOpen += () =>
         {
             Debug.Log("WebSocket abierto");
             OnWebSocketOpen?.Invoke();
+
+            var data = new
+            {
+                message = "getChannels",
+                guildID = "1087941237924966420",
+                userID = "278345841734057994"
+            };
+            string requestData = JsonConvert.SerializeObject(data);
+            SendMessageToWebSocket(requestData);
         };
 
-        ws.OnClose += (sender, e) =>
+        ws.OnClose += (e) =>
         {
             Debug.Log("WebSocket cerrado");
         };
 
-        ws.OnMessage += (sender, e) =>
+        ws.OnMessage += (bytes) =>
         {
-            OnMessageReceived?.Invoke(e.Data);
+            var message = System.Text.Encoding.UTF8.GetString(bytes);
+            OnMessageReceived?.Invoke(message);
         };
 
-        ws.OnError += (sender, e) =>
+        ws.OnError += (e) =>
         {
-            Debug.LogError("Error en WebSocket: " + e.Message);
+            Debug.LogError("Error en WebSocket: " + e);
         };
 
-        ws.Connect();
+        await ws.Connect();
     }
 
-    public void SendMessageToWebSocket(string message)
+    void Update()
     {
-        ws.Send(message);
+#if !UNITY_WEBGL || UNITY_EDITOR
+        ws.DispatchMessageQueue();
+#endif
     }
 
-    private void OnDestroy()
+    public async void SendMessageToWebSocket(string message)
     {
-        if (ws != null && ws.IsAlive)
-        {
-            ws.Close();
-        }
+        await ws.SendText(message);
+    }
+
+    private async void OnDestroy()
+    {
+        await ws.Close();
     }
 }
