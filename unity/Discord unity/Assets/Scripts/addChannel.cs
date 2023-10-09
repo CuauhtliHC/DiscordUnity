@@ -5,21 +5,14 @@ using Newtonsoft.Json;
 
 public class AddChannel : MonoBehaviour
 {
-    private Queue<ChannelData> channelsQueue = new Queue<ChannelData>();
-    private Queue<ChannelsWithUsers> listChannelsUsers = new Queue<ChannelsWithUsers>();
-    private ConnectionWebSocket webSocket;
-    private UserSpawn userSpawn;
-
-    public GameObject prefabToSpawn;
-    public GameObject parentObject;
-    public GameObject prefabCharacter;
-
-    [System.Serializable]
+    [Serializable]
     public class ChannelData
     {
         public string id;
         public string name;
     }
+
+    [Serializable]
     public class ChannelsWithUsers
     {
         public string channelId;
@@ -27,19 +20,28 @@ public class AddChannel : MonoBehaviour
         public List<User> users;
     }
 
+    [Serializable]
     public class User
     {
         public string UserName;
         public string UserId;
     }
 
-    [System.Serializable]
+    [Serializable]
     public class ChannelsData
     {
         public List<ChannelData> channels;
         public string type;
         public List<ChannelsWithUsers> usersOnline;
     }
+
+    private Queue<ChannelData> channelsQueue = new Queue<ChannelData>();
+    private Queue<ChannelsWithUsers> listChannelsUsers = new Queue<ChannelsWithUsers>();
+    private UserSpawn userSpawn;
+
+    public GameObject prefabToSpawn;
+    public GameObject parentObject;
+    public GameObject prefabCharacter;
 
 
     void Start()
@@ -50,29 +52,6 @@ public class AddChannel : MonoBehaviour
             Debug.LogError("No se encontró un objeto UserSpawn en la escena.");
         }
         ConnectionWebSocket.OnMessageReceived += HandleWebSocketMessage;
-        //webSocket = FindObjectOfType<ConnectionWebSocket>();
-
-        //if (webSocket != null)
-        //{
-        //    webSocket.OnWebSocketOpen += () =>
-        //    {
-        //        var data = new
-        //        {
-        //            //482690190838857730
-        //            //309462354004017152
-        //            //1087941237924966420
-        //            message = "getChannels",
-        //            guildID = "309462354004017152",
-        //            userID = "278345841734057994"
-        //        };
-        //        string requestData = JsonConvert.SerializeObject(data);
-        //        webSocket.SendMessageToWebSocket(requestData);
-        //    };
-        //}
-        //else
-        //{
-        //    Debug.LogError("No se encontró un objeto connectionWebSocket en la escena.");
-        //}
     }
 
     private void Update()
@@ -84,7 +63,8 @@ public class AddChannel : MonoBehaviour
     private void HandleWebSocketMessage(string message)
     {
         ChannelsData channelsData = JsonConvert.DeserializeObject<ChannelsData>(message);
-        if(channelsData.type == "channels") {
+        if (channelsData.type == "channels")
+        {
             foreach (ChannelData channel in channelsData.channels)
             {
                 channelsQueue.Enqueue(channel);
@@ -146,7 +126,7 @@ public class AddChannel : MonoBehaviour
                 foreach (User user in channelWithUsers.users)
                 {
                     userSpawn.InstantiateUserPrefab(user.UserName, user.UserId, channelWithUsers.channelId, prefabCharacter, parentObject, center2D);
-                }                
+                }
             }
         }
         catch (Exception ex)

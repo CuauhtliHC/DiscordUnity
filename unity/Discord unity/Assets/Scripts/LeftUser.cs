@@ -15,13 +15,13 @@ public class LeftUser : MonoBehaviour
         public string ChannelId;
         public string Type;
     }
-    void Start()
+    private void Start()
     {
         ConnectionWebSocket.OnMessageReceived += OnMessageReceived;
         removeCharacter = FindObjectOfType<RemoveCharacter>();
     }
 
-    void Update()
+    private void Update()
     {
         if (!string.IsNullOrEmpty(messageReceived))
         {

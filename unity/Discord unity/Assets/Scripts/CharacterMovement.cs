@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 public class CharacterMovement : MonoBehaviour
 {
@@ -10,14 +9,12 @@ public class CharacterMovement : MonoBehaviour
     private Vector2 targetPosition;
     private bool isMoving = false;
     private string userName;
-
     private UserInfo userInfo;
 
     private void Start()
     {
         grid = FindObjectOfType<Grid>();
         userName = gameObject.name;
-
         userInfo = GetComponent<UserInfo>();
     }
 
@@ -26,13 +23,9 @@ public class CharacterMovement : MonoBehaviour
         if (Input.GetMouseButtonDown(1))
         {
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
             Vector3Int cellPosition = grid.WorldToCell(mousePosition);
-
             Vector3 center = grid.GetCellCenterWorld(cellPosition);
-
             Vector2 center2D = new Vector2(center.x, center.y);
-
             targetPosition = center2D;
             RaycastHit2D hit = Physics2D.Raycast(center2D, Vector2.zero);
 

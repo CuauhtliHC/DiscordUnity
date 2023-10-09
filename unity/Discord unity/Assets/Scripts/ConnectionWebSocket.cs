@@ -8,16 +8,16 @@ public class ConnectionWebSocket : MonoBehaviour
 {
     private WebSocket ws;
 
-    public const string serverURL = "ws://localhost:8080";
+    public const string ServerUrl = "ws://localhost:8080";
     public static event Action<string> OnMessageReceived;
     public event Action OnWebSocketOpen;
 
     async void Start()
     {
-        ws = new WebSocket(serverURL);
-        string[] paramsUrl = Regex.Split(Application.absoluteURL, "&");
-        string userId = paramsUrl[0].Split("="[0])[1];
-        string guildId = paramsUrl[1].Split("="[0])[1];
+        ws = new WebSocket(ServerUrl);
+        //string[] paramsUrl = Regex.Split(Application.absoluteURL, "&");
+        //string userId = paramsUrl[0].Split("="[0])[1];
+        //string guildId = paramsUrl[1].Split("="[0])[1];
 
         ws.OnOpen += () =>
         {
@@ -47,7 +47,7 @@ public class ConnectionWebSocket : MonoBehaviour
 
         ws.OnError += (e) =>
         {
-            Debug.LogError("Error en WebSocket: " + e);
+            Debug.LogError($"Error en WebSocket: {e}");
         };
 
         await ws.Connect();

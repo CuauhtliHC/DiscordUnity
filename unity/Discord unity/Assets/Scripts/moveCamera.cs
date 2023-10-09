@@ -5,7 +5,7 @@ public class MoveCamera : MonoBehaviour
     private Vector3 Origin;
     private Vector3 Difference;
 
-    private bool drag = false;
+    private bool isDraggin;
 
 
     public float sensitivity = 2.0f;
@@ -19,17 +19,17 @@ public class MoveCamera : MonoBehaviour
         if (Input.GetMouseButton(0))
         {
             Difference = (Camera.main.ScreenToWorldPoint(Input.mousePosition)) - Camera.main.transform.position;
-            if (drag == false)
+            if (!isDraggin)
             {
-                drag = true;
+                isDraggin = true;
                 Origin = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             }
         }
         else
         {
-            drag = false;
+            isDraggin = false;
         }
-        if(drag)
+        if(isDraggin)
         {
             Camera.main.transform.position = Origin - Difference;
         }

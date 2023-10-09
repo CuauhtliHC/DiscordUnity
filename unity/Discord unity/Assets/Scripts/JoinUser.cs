@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 using Newtonsoft.Json;
 
 public class JoinUser : MonoBehaviour
@@ -18,13 +17,13 @@ public class JoinUser : MonoBehaviour
         public string ChannelId;
         public string Type;
     }
-    void Start()
+    private void Start()
     {
         ConnectionWebSocket.OnMessageReceived += OnMessageReceived;
         userSpawn = FindObjectOfType<UserSpawn>(); ;
     }
 
-    void Update()
+    private void Update()
     {
         if (!string.IsNullOrEmpty(messageReceived))
         {

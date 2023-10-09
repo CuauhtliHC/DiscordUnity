@@ -20,10 +20,6 @@ const getOnlineUsers = (channels) => {
     .forEach((voiceChannel) => {
       const connectedMembers = voiceChannel.members;
       if (connectedMembers.size > 0) {
-        console.log(`Usuarios conectados a ${voiceChannel.name}:`);
-        connectedMembers.forEach((member) => {
-          console.log(`- ${member.user.username}`);
-        });
         const usersInChannel = connectedMembers.map((member) => {
           return { userID: member.user.id, userName: member.user.username };
         });

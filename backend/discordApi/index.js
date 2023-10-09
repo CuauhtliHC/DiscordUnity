@@ -1,24 +1,22 @@
 const { client } = require('../discordbot/botOn');
 
-const getGuildChannels = async (guildId) => {
+const fetchGuild = async (guildId) => {
   try {
-    const guild = await client.guilds.fetch(guildId);
-    const channels = guild.channels.cache;
-    return channels;
+    return await client.guilds.fetch(guildId);
   } catch (error) {
     console.error('Error al obtener los canales:', error);
     throw error;
   }
 };
 
+const getGuildChannels = async (guildId) => {
+  const guild = await fetchGuild(guildId);
+  return guild.channels.cache;
+};
+
 const checkBotThere = async (guildId) => {
   try {
-    const guild = client.guilds.cache.find((g) => g.id === guildId);
-    if (guild) {
-      return true;
-    } else {
-      return false;
-    }
+    return Boolean(client.guilds.cache.find((g) => g.id === guildId));
   } catch (error) {
     console.log(error);
   }
