@@ -15,9 +15,9 @@ public class ConnectionWebSocket : MonoBehaviour
     async void Start()
     {
         ws = new WebSocket(ServerUrl);
-        //string[] paramsUrl = Regex.Split(Application.absoluteURL, "&");
-        //string userId = paramsUrl[0].Split("="[0])[1];
-        //string guildId = paramsUrl[1].Split("="[0])[1];
+        string[] paramsUrl = Regex.Split(Application.absoluteURL, "&");
+        string userId = paramsUrl[0].Split("="[0])[1];
+        string guildId = paramsUrl[1].Split("="[0])[1];
 
         ws.OnOpen += () =>
         {
@@ -27,8 +27,8 @@ public class ConnectionWebSocket : MonoBehaviour
             var data = new
             {
                 message = "getChannels",
-                guildID = "1087941237924966420",
-                userID = "278345841734057994"
+                guildID = guildId,
+                userID = userId
             };
             string requestData = JsonConvert.SerializeObject(data);
             SendMessageToWebSocket(requestData);
