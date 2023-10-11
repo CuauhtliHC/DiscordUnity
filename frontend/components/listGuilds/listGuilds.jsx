@@ -1,14 +1,16 @@
 import { useEffect, useState } from 'react';
+import { useRecoilState } from 'recoil';
 import { getGuilds } from '@/utils/axiosGet';
 import CardServer from '@/commons/cardServer';
 import Skeleton from '@/commons/skeleton';
+import { dataGuilds } from 'hooks/arrayGuilds';
 
 const ListGuilds = ({ accessToken }) => {
-  const [arrayGuilds, setArrayGuilds] = useState(null);
+  const [arrayGuilds, setGuilds] = useRecoilState(dataGuilds);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    getGuilds(accessToken, setArrayGuilds);
+    getGuilds(accessToken, setGuilds, arrayGuilds);
     setTimeout(() => {
       setIsLoading(false);
     }, 2000);
@@ -37,7 +39,7 @@ const ListGuilds = ({ accessToken }) => {
               {isLoading
                 ? skeletonArray
                 : arrayGuilds &&
-                  arrayGuilds.map((guild) => (
+                  arrayGuilds.guilds.map((guild) => (
                     <CardServer guild={guild} key={guild.id} />
                   ))}
             </div>

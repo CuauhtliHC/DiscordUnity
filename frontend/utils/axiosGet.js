@@ -1,17 +1,29 @@
 import axios from 'axios';
+import { saveState } from './browserStorage';
 
-const getGuilds = async (accessToken, setArrayGuilds) => {
+const getGuilds = async (accessToken, setGuilds, guilds) => {
+  const now = new Date();
+  const ttl = 43200;
   try {
-    const response = await axios.get(
-      'https://discord.com/api/v10/users/@me/guilds',
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
+    if (!guilds || now.getTime() > guilds.expiry) {
+      const response = await axios.get(
+        'https://discord.com/api/v10/users/@me/guilds',
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
         },
-      },
-    );
-    setArrayGuilds(response.data);
-  } catch (error) {}
+      );
+      const objWithGuilds = {
+        guilds: response.data,
+        expiry: now.getTime() + ttl,
+      };
+      saveState(response.data);
+      setGuilds(objWithGuilds);
+    }
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 const botInGuild = async (idGuild, serverOnBot) => {

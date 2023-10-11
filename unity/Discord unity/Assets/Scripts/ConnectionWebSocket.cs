@@ -2,33 +2,34 @@ using System;
 using UnityEngine;
 using NativeWebSocket;
 using Newtonsoft.Json;
-using System.Text.RegularExpressions;
+using System.Runtime.InteropServices;
 
 public class ConnectionWebSocket : MonoBehaviour
 {
     private WebSocket ws;
+    [DllImport("__Internal")]
+    private static extern string GetUserId();
 
-    public const string ServerUrl = "ws://localhost:8080";
+    [DllImport("__Internal")]
+    private static extern string GetGuildId();
+
+    private const string ServerUrl = "ws://localhost:8080";
     public static event Action<string> OnMessageReceived;
     public event Action OnWebSocketOpen;
 
     async void Start()
     {
         ws = new WebSocket(ServerUrl);
-        string[] paramsUrl = Regex.Split(Application.absoluteURL, "&");
-        string userId = paramsUrl[0].Split("="[0])[1];
-        string guildId = paramsUrl[1].Split("="[0])[1];
 
         ws.OnOpen += () =>
         {
             Debug.Log("WebSocket abierto");
             OnWebSocketOpen?.Invoke();
-
             var data = new
             {
                 message = "getChannels",
-                guildID = guildId,
-                userID = userId
+                guildID = GetGuildId(),
+                userID = GetUserId()
             };
             string requestData = JsonConvert.SerializeObject(data);
             SendMessageToWebSocket(requestData);

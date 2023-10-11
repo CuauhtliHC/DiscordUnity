@@ -2,27 +2,29 @@ import { useSession } from 'next-auth/react';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { useRecoilState } from 'recoil';
 import { botInGuild, getGuilds } from '@/utils/axiosGet';
 import Game from '@/components/game/game';
+import { dataGuilds } from 'hooks/arrayGuilds';
 
 const GuildPage = () => {
   const router = useRouter();
   const { data } = useSession();
   const searchParams = useSearchParams();
   const idGuild = searchParams.get('id');
-  const [arrayGuilds, setArrayGuilds] = useState(null);
+  const [arrayGuilds, setGuilds] = useRecoilState(dataGuilds);
   const [isLoading, setIsLoading] = useState(true);
   const accessToken = data?.accessToken;
   const [serverOnBot, setServerOnBot] = useState(false);
 
-  const guildFound = arrayGuilds?.some((guild) => guild.id === idGuild);
+  const guildFound = arrayGuilds?.guilds.some((guild) => guild.id === idGuild);
 
   useEffect(() => {
     if (!data) {
       router.push('/');
     }
 
-    if (data && !guildFound) getGuilds(accessToken, setArrayGuilds);
+    if (data && !guildFound) getGuilds(accessToken, setGuilds, arrayGuilds);
     setTimeout(() => {
       setIsLoading(false);
     }, 2000);

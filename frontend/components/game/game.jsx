@@ -18,7 +18,7 @@ const Game = () => {
     <div>
       {data && (
         <iframe
-          src={`/gameBuild/index.html?userId=${data.discordUser.id}&guildId=${id}`}
+          src={'/gameBuild/index.html'}
           title="Juego Unity WebGL"
           width="1280"
           height="720"

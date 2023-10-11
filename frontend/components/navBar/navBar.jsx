@@ -1,16 +1,19 @@
 import { Fragment } from 'react';
 import { signOut } from 'next-auth/react';
+import { useRouter } from 'next/router';
+import Link from 'next/link';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
-import Link from 'next/link';
-
-const navigation = [{ name: 'Servers', href: '/', current: true }];
 
 const classNames = (...classes) => {
   return classes.filter(Boolean).join(' ');
 };
 
 const NavBar = ({ userData }) => {
+  const router = useRouter();
+  const navigation = [
+    { name: 'Servers', href: '/', current: router.asPath === '/' },
+  ];
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }) => (
@@ -122,7 +125,11 @@ const NavBar = ({ userData }) => {
                               active ? 'bg-gray-100' : '',
                               'block px-4 py-2 text-sm text-gray-700',
                             )}
-                            onClick={() => signOut()}
+                            onClick={() => {
+                              localStorage.removeItem('userId');
+                              localStorage.removeItem('guildId');
+                              return signOut();
+                            }}
                           >
                             Sign out
                           </a>
