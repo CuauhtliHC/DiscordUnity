@@ -15,7 +15,7 @@ const LoginPage = () => {
     <>
       {data ? (
         <>
-          <ListGuilds accessToken={data.accessToken} />
+          <ListGuilds />
         </>
       ) : (
         <>

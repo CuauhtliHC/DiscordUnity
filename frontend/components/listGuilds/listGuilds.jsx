@@ -1,20 +1,11 @@
-import { useEffect, useState } from 'react';
-import { useRecoilState } from 'recoil';
-import { getGuilds } from '@/utils/axiosGet';
+import useSWR from 'swr';
 import CardServer from '@/commons/cardServer';
 import Skeleton from '@/commons/skeleton';
-import { dataGuilds } from 'hooks/arrayGuilds';
 
-const ListGuilds = ({ accessToken }) => {
-  const [arrayGuilds, setGuilds] = useRecoilState(dataGuilds);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    getGuilds(accessToken, setGuilds, arrayGuilds);
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
-  }, [accessToken]);
+const ListGuilds = () => {
+  const { data, error, isLoading } = useSWR(
+    'https://discord.com/api/v10/users/@me/guilds',
+  );
 
   const skeletonArray = Array.from({ length: 8 }, (_, index) => (
     <Skeleton key={index} />
@@ -38,8 +29,7 @@ const ListGuilds = ({ accessToken }) => {
             <div className="mb-10 sm:mb-0 mt-10 grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 pb-[50px]">
               {isLoading
                 ? skeletonArray
-                : arrayGuilds &&
-                  arrayGuilds.guilds.map((guild) => (
+                : data.map((guild) => (
                     <CardServer guild={guild} key={guild.id} />
                   ))}
             </div>

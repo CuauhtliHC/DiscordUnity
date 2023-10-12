@@ -1,14 +1,8 @@
 import { SessionProvider } from 'next-auth/react';
-import {
-  RecoilRoot,
-  atom,
-  selector,
-  useRecoilState,
-  useRecoilValue,
-} from 'recoil';
 import '@/styles/global.css';
 import ComponentNavBar from '@/components/navBar';
 import ComponentHead from '@/components/head/head';
+import SwrComponent from '@/components/swr/swr';
 
 export default function App({
   Component,
@@ -16,11 +10,11 @@ export default function App({
 }) {
   return (
     <SessionProvider session={session}>
-      <RecoilRoot>
+      <SwrComponent>
         <ComponentHead />
         <ComponentNavBar />
         <Component {...pageProps} />
-      </RecoilRoot>
+      </SwrComponent>
     </SessionProvider>
   );
 }
