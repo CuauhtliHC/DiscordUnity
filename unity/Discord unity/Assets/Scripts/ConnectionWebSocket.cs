@@ -28,8 +28,8 @@ public class ConnectionWebSocket : MonoBehaviour
             var data = new
             {
                 message = "getChannels",
-                guildID = GetGuildId(),
-                userID = GetUserId()
+                guildID = "309462354004017152",
+                userID = "278345841734057994"
             };
             string requestData = JsonConvert.SerializeObject(data);
             SendMessageToWebSocket(requestData);

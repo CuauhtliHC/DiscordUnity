@@ -5,6 +5,7 @@ import useSWR from 'swr';
 import { useEffect } from 'react';
 import { fetcher } from '@/utils/axiosGet';
 import Game from '@/components/game/game';
+import Head from 'next/head';
 
 const GuildPage = () => {
   const router = useRouter();
@@ -15,7 +16,7 @@ const GuildPage = () => {
     'https://discord.com/api/v10/users/@me/guilds',
   );
   const accessToken = session?.accessToken;
-  const guildFound = data?.some((guild) => guild.id === idGuild);
+  const guildFound = data?.find((guild) => guild.id === idGuild);
   const {
     data: serverOnBot,
     error: serverOnBotError,
@@ -25,11 +26,16 @@ const GuildPage = () => {
     fetcher,
   );
 
+  const titleOfPage = isLoading
+    ? 'Loading'
+    : guildFound
+    ? guildFound.name
+    : 'Guild';
+
   useEffect(() => {
     if (!session) {
       router.push('/');
-    }
-    if (!isLoading && !guildFound) {
+    } else if (!isLoading && !guildFound) {
       router.push('/404');
     } else if (!serverOnBotLoading && !serverOnBot.botInGuild) {
       router.push(
@@ -39,24 +45,36 @@ const GuildPage = () => {
   }, [accessToken, guildFound, isLoading, serverOnBotLoading]);
 
   return (
-    <div
-      className="bg-gray-900 min-h-screen flex items-center justify-center bg-cover bg-no-repeat"
-      style={{
-        backgroundImage: 'url("/img/background.jpg")',
-      }}
-    >
-      {serverOnBotLoading ? (
-        <div
-          className="animate-spin inline-block w-10 h-10 border-[3px] border-current border-t-transparent text-orange-600 rounded-full"
-          role="status"
-          aria-label="loading"
-        >
-          <span className="sr-only">Loading...</span>
-        </div>
-      ) : (
-        <>{serverOnBot.botInGuild && <Game />}</>
-      )}
-    </div>
+    <>
+      <Head>
+        <title>{titleOfPage}</title>
+        <style>
+          {`
+        body {
+          overflow: hidden;
+        }
+      `}
+        </style>
+      </Head>
+      <div
+        className="bg-gray-900 min-h-screen flex items-center justify-center bg-cover bg-no-repeat"
+        style={{
+          backgroundImage: 'url("/img/background.jpg")',
+        }}
+      >
+        {serverOnBotLoading ? (
+          <div
+            className="animate-spin inline-block w-10 h-10 border-[3px] border-current border-t-transparent text-orange-600 rounded-full"
+            role="status"
+            aria-label="loading"
+          >
+            <span className="sr-only">Loading...</span>
+          </div>
+        ) : (
+          <>{serverOnBot.botInGuild && <Game />}</>
+        )}
+      </div>
+    </>
   );
 };
 

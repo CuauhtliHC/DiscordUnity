@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class UserSpawn : MonoBehaviour
 {
@@ -13,5 +12,12 @@ public class UserSpawn : MonoBehaviour
         userData.UserName = userName;
         userData.UserId = userID;
         userData.inChannel = channelId;
+        GameObject textMeshProGameObject = new("TextMeshPro");
+        TextMeshPro textMeshProComponent = textMeshProGameObject.AddComponent<TextMeshPro>();
+        textMeshProComponent.text = userName;
+        textMeshProComponent.fontSize = 1.5f;
+        textMeshProComponent.alignment = TextAlignmentOptions.Center;
+        textMeshProComponent.fontStyle = FontStyles.Bold;
+        textMeshProComponent.transform.parent = prefabInstance.transform;
     }
 }

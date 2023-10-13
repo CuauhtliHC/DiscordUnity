@@ -1,11 +1,10 @@
 import Head from 'next/head';
 import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/router';
 
 const ComponentHead = () => {
-  const router = useRouter();
-  const { data } = useSession();
-  const titleOfPage = router.query.id ? 'Guild' : data ? 'Servers' : 'Login';
+  const { data: session } = useSession();
+
+  const titleOfPage = session ? 'Servers' : 'Login';
   return (
     <Head>
       <title>{titleOfPage}</title>

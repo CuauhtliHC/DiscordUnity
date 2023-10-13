@@ -29,7 +29,7 @@ const ListGuilds = () => {
             <div className="mb-10 sm:mb-0 mt-10 grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 pb-[50px]">
               {isLoading
                 ? skeletonArray
-                : data.map((guild) => (
+                : data?.map((guild) => (
                     <CardServer guild={guild} key={guild.id} />
                   ))}
             </div>
