@@ -3,6 +3,7 @@ const http = require('http');
 const dotenv = require('dotenv');
 const express = require('express');
 const cors = require('cors');
+const { Server } = require('socket.io');
 
 dotenv.config();
 
@@ -34,4 +35,6 @@ server.listen(8080, () => {
   console.log('Servidor WebSocket está escuchando en el puerto 8080');
 });
 
-module.exports = { server, wsServer };
+const io = new Server(8081, {});
+
+module.exports = { server, wsServer, io };

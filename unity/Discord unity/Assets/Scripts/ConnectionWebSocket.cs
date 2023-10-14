@@ -13,7 +13,7 @@ public class ConnectionWebSocket : MonoBehaviour
     [DllImport("__Internal")]
     private static extern string GetGuildId();
 
-    private const string ServerUrl = "ws://localhost:8080";
+    private const string ServerUrl = "ws://localhost:8081";
     public static event Action<string> OnMessageReceived;
     public event Action OnWebSocketOpen;
 

@@ -1,6 +1,6 @@
 const { voiceStateUpdate } = require('./discordApi/voiceStateUpdate');
 const { login, client } = require('./discordbot/botOn');
-const { wsServer, server } = require('./server');
+const { wsServer, server, io } = require('./server');
 const { handleSocketConnection } = require('./socketEvents/connection');
 
 wsServer.on('connection', handleSocketConnection);
@@ -14,5 +14,9 @@ client.once('ready', () => {
 });
 
 client.on('voiceStateUpdate', voiceStateUpdate);
+
+io.on('connection', (socket) => {
+  console.log(`Client connected [id=${socket.id}]`);
+});
 
 login();
