@@ -16,7 +16,7 @@ client.once('ready', () => {
 client.on('voiceStateUpdate', voiceStateUpdate);
 
 io.on('connection', (socket) => {
-  console.log(`Client connected [id=${socket.id}]`);
+  console.log('New connection', { socket });
 });
 
 login();
