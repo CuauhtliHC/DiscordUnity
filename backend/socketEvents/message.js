@@ -1,5 +1,6 @@
+const { getGuildChannels } = require('../discordApi');
 const { session } = require('../session/session');
-const { getGuildChannels, getOnlineUsers } = require('../utils/discordUtils');
+const { getOnlineUsers } = require('../utils/discordUtils');
 
 const handleMessage = async (message, socket) => {
   try {

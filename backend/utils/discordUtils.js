@@ -1,16 +1,3 @@
-const { client } = require('../discordbot/botOn.js');
-
-const getGuildChannels = async (guildId) => {
-  try {
-    const guild = await client.guilds.fetch(guildId);
-    const channels = guild.channels.cache;
-    return channels;
-  } catch (error) {
-    console.error('Error al obtener los canales:', error);
-    throw error;
-  }
-};
-
 const getOnlineUsers = (channels) => {
   const channelData = [];
   const usersOnline = [];
@@ -43,4 +30,4 @@ const getOnlineUsers = (channels) => {
   return { channelData, usersOnline };
 };
 
-module.exports = { getGuildChannels, getOnlineUsers };
+module.exports = { getOnlineUsers };

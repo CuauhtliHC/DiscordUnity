@@ -35,6 +35,13 @@ server.listen(8080, () => {
   console.log('Servidor WebSocket está escuchando en el puerto 8080');
 });
 
-const io = new Server(8081, {});
+const io = new Server({
+  cors: {
+    origin: '*',
+    methods: ['GET', 'POST'],
+  },
+});
+
+io.listen(8081);
 
 module.exports = { server, wsServer, io };
