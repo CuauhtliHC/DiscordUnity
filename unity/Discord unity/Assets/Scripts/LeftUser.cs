@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft.Json;
+using Firesplash.GameDevAssets.SocketIOPlus;
 
 public class LeftUser : MonoBehaviour
 {
@@ -17,7 +18,7 @@ public class LeftUser : MonoBehaviour
     }
     private void Start()
     {
-        ConnectionWebSocket.OnMessageReceived += OnMessageReceived;
+        ConnectionWebSocket.OnUserLeftReceived += OnMessageReceived;
         removeCharacter = FindObjectOfType<RemoveCharacter>();
     }
 
@@ -34,9 +35,9 @@ public class LeftUser : MonoBehaviour
         }
     }
 
-    private void OnMessageReceived(string message)
+    private void OnMessageReceived(SocketIOEvent ioEvent)
     {
-        messageReceived = message;
+        //messageReceived = ioEvent;
     }
 
     private string messageReceived;

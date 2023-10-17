@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Newtonsoft.Json;
+using Firesplash.GameDevAssets.SocketIOPlus;
 
 public class AddChannel : MonoBehaviour
 {
@@ -51,7 +51,7 @@ public class AddChannel : MonoBehaviour
         {
             Debug.LogError("No se encontró un objeto UserSpawn en la escena.");
         }
-        ConnectionWebSocket.OnMessageReceived += HandleWebSocketMessage;
+        ConnectionWebSocket.OnChannelsReceived += HandleWebSocketMessage;
     }
 
     private void Update()
@@ -60,18 +60,26 @@ public class AddChannel : MonoBehaviour
         InstantiateUser();
     }
 
-    private void HandleWebSocketMessage(string message)
+    private void HandleWebSocketMessage(SocketIOEvent ioEvent)
     {
-        ChannelsData channelsData = JsonConvert.DeserializeObject<ChannelsData>(message);
-        if (channelsData.type == "channels")
+
+        if (ioEvent.payloads.Count < 1)
         {
-            foreach (ChannelData channel in channelsData.channels)
+            Debug.LogError("Received TechData without payload");
+            return;
+        }
+
+        try
+        {
+            ChannelsData dataReceived = ioEvent.GetPayload<ChannelsData>(0);
+            Debug.Log(dataReceived);
+            foreach (ChannelData channel in dataReceived.channels)
             {
                 channelsQueue.Enqueue(channel);
             }
-            if (channelsData.usersOnline != null && channelsData.usersOnline.Count > 0)
+            if (dataReceived.usersOnline != null && dataReceived.usersOnline.Count > 0)
             {
-                foreach (ChannelsWithUsers channelWithUsers in channelsData.usersOnline)
+                foreach (ChannelsWithUsers channelWithUsers in dataReceived.usersOnline)
                 {
                     listChannelsUsers.Enqueue(channelWithUsers);
                 }
@@ -80,6 +88,10 @@ public class AddChannel : MonoBehaviour
             {
                 Debug.Log("La lista de usuarios en línea está vacía o nula.");
             }
+        }
+        catch (Exception e)
+        {
+            Debug.LogException(e);
         }
     }
 

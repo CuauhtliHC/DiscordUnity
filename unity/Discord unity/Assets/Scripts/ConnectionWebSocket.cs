@@ -1,74 +1,89 @@
 using System;
 using UnityEngine;
+using System.Collections.Generic;
 using NativeWebSocket;
+using Firesplash.GameDevAssets.SocketIOPlus;
 using Newtonsoft.Json;
 using System.Runtime.InteropServices;
 
 
 public class ConnectionWebSocket : MonoBehaviour
 {
-    private WebSocket ws;
+    public SocketIOClient io;
     [DllImport("__Internal")]
     private static extern string GetUserId();
 
     [DllImport("__Internal")]
     private static extern string GetGuildId();
 
-    private const string ServerUrl = "ws://localhost:8080";
-    public static event Action<string> OnMessageReceived;
+    public class ChannelData
+    {
+        public string id;
+        public string name;
+    }
+
+    public class ChannelsWithUsers
+    {
+        public string channelId;
+        public string channelName;
+        public List<User> users;
+    }
+
+    public class User
+    {
+        public string UserName;
+        public string UserId;
+    }
+
+    public class ChannelsData
+    {
+        public List<ChannelData> channels;
+        public List<ChannelsWithUsers> usersOnline;
+    }
+
+    private const string ServerUrl = "ws://localhost:8081";
+    public static event Action<SocketIOEvent> OnChannelsReceived;
+    public static event Action<SocketIOEvent> OnUserJoinReceived;
+    public static event Action<SocketIOEvent> OnUserLeftReceived;
+    public static event Action<SocketIOEvent> OnUserSwitchReceived;
     public event Action OnWebSocketOpen;
 
-    async void Start()
+    void Start()
     {
-        ws = new WebSocket(ServerUrl);
-
-        ws.OnOpen += () =>
-        {
-            Debug.Log("WebSocket abierto");
-            OnWebSocketOpen?.Invoke();
+        io.D.On("connect", () => {
+            Debug.Log("LOCAL: Hey, we are connected!");
             var data = new
             {
-                message = "getChannels",
                 guildID = "309462354004017152",
                 userID = "278345841734057994"
             };
-            string requestData = JsonConvert.SerializeObject(data);
-            SendMessageToWebSocket(requestData);
-        };
-
-        ws.OnClose += (e) =>
+            io.D.Emit("getChannels", data);
+        });
+        io.D.On("getChannels", (ioEvent) =>
         {
-            Debug.Log("WebSocket cerrado");
-        };
+            OnChannelsReceived?.Invoke(ioEvent);
+        });
 
-        ws.OnMessage += (bytes) =>
+        io.D.On("userJoinChannel", (ioEvent) =>
         {
-            var message = System.Text.Encoding.UTF8.GetString(bytes);
-            OnMessageReceived?.Invoke(message);
-        };
+            OnUserJoinReceived?.Invoke(ioEvent);
+        });
 
-        ws.OnError += (e) =>
+        io.D.On("userLeftChannel", (ioEvent) =>
         {
-            Debug.LogError($"Error en WebSocket: {e}");
-        };
+            OnUserLeftReceived?.Invoke(ioEvent);
+        });
 
-        await ws.Connect();
+        io.D.On("userSwitchedChannel", (ioEvent) =>
+        {
+            OnUserSwitchReceived?.Invoke(ioEvent);
+        });
+
+        io.Connect(ServerUrl);
     }
 
-    void Update()
+    private void OnDestroy()
     {
-#if !UNITY_WEBGL || UNITY_EDITOR
-        ws.DispatchMessageQueue();
-#endif
-    }
-
-    public async void SendMessageToWebSocket(string message)
-    {
-        await ws.SendText(message);
-    }
-
-    private async void OnDestroy()
-    {
-        await ws.Close();
+       
     }
 }

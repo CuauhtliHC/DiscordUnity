@@ -1,17 +1,7 @@
-const {
-  voiceStateUpdate,
-  voiceStateUpdateIo,
-} = require('./discordApi/voiceStateUpdate');
+const { voiceStateUpdateIo } = require('./discordApi/voiceStateUpdate');
 const { login, client } = require('./discordbot/botOn');
 const { handleIoConnection } = require('./ioEvents/connection');
-const { wsServer, server, io } = require('./server');
-const { handleSocketConnection } = require('./socketEvents/connection');
-
-wsServer.on('connection', handleSocketConnection);
-
-wsServer.on('error', (error) => {
-  console.error('Error en la conexión WebSocket:', error);
-});
+const { server, io } = require('./server');
 
 client.once('ready', () => {
   console.log(`Logged in as ${client.user.tag}`);

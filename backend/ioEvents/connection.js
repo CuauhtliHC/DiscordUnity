@@ -1,7 +1,7 @@
 const { responseGetChannels } = require('./getChannels');
 
 const handleIoConnection = (socket) => {
-  console.log('New connection');
+  console.log('New connection socket io');
   socket.on('getChannels', async (data) => {
     await responseGetChannels(socket, data);
   });

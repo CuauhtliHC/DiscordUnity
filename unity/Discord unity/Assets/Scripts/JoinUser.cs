@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft.Json;
+using Firesplash.GameDevAssets.SocketIOPlus;
 
 public class JoinUser : MonoBehaviour
 {
@@ -19,7 +20,7 @@ public class JoinUser : MonoBehaviour
     }
     private void Start()
     {
-        ConnectionWebSocket.OnMessageReceived += OnMessageReceived;
+        ConnectionWebSocket.OnUserJoinReceived += OnMessageReceived;
         userSpawn = FindObjectOfType<UserSpawn>(); ;
     }
 
@@ -69,9 +70,9 @@ public class JoinUser : MonoBehaviour
         }
     }
 
-    private void OnMessageReceived(string message)
+    private void OnMessageReceived(SocketIOEvent ioEvent)
     {
-        messageReceived = message;
+        //messageReceived = ioEvent;
     }
 
     private string messageReceived;
