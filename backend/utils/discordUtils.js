@@ -1,4 +1,4 @@
-const getOnlineUsers = (channels) => {
+const getOnlineUsers = (channels, socketsInRoom) => {
   const channelData = [];
   const usersOnline = [];
 
@@ -8,7 +8,23 @@ const getOnlineUsers = (channels) => {
       const connectedMembers = voiceChannel.members;
       if (connectedMembers.size > 0) {
         const usersInChannel = connectedMembers.map((member) => {
-          return { userID: member.user.id, userName: member.user.username };
+          const socketFound = socketsInRoom.find(
+            (s) => s.data.userId === member.user.id,
+          );
+          const positionX =
+            !socketFound || !socketFound.data.positionX
+              ? null
+              : socketFound.data.positionX;
+          const positionY =
+            !socketFound || !socketFound.data.positionY
+              ? null
+              : socketFound.data.positionY;
+          return {
+            userID: member.user.id,
+            userName: member.user.username,
+            positionX,
+            positionY,
+          };
         });
         usersOnline.push({
           channelName: voiceChannel.name,

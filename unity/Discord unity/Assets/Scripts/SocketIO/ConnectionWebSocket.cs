@@ -19,6 +19,8 @@ public class ConnectionWebSocket : MonoBehaviour
     public static event Action<SocketIOEvent> OnUserLeftReceived;
     public static event Action<SocketIOEvent> OnUserSwitchReceived;
     public static event Action<SocketIOEvent> OnUserMoventReceived;
+    public static event Action<SocketIOEvent> OnPositionPj;
+    public static event Action<string> OnUserHasLeftRoom;
     public static event Action<string> OnDisconnectedUser;
 
     struct DisconectedReason
@@ -32,8 +34,8 @@ public class ConnectionWebSocket : MonoBehaviour
         {
             var data = new
             {
-                guildID = "1087941237924966420",
-                userID = "278345841734057994"
+                guildID = GetGuildId(),
+                userID = GetUserId()
             };
             io.D.Emit("getChannels", data);
         });
@@ -60,6 +62,16 @@ public class ConnectionWebSocket : MonoBehaviour
         io.D.On("playerMovement", (ioEvent) =>
         {
             OnUserMoventReceived?.Invoke(ioEvent);
+        });
+
+        io.D.On("responsePositionPj", (ioEvent) =>
+        {
+            OnPositionPj?.Invoke(ioEvent);
+        });
+
+        io.D.On<string>("userHasLeftRoom", (ioEvent) =>
+        {
+            OnUserHasLeftRoom?.Invoke(ioEvent);
         });
 
         io.D.On<string>("closeReason", (ioEvent)=> {

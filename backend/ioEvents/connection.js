@@ -1,5 +1,6 @@
-const { io } = require('../server');
+const { handleSocketDisconnect } = require('./disconnect');
 const { responseGetChannels } = require('./getChannels');
+const { responsePlayerMovement } = require('./playerMovement');
 
 const handleIoConnection = (socket) => {
   console.log('New connection socket io');
@@ -7,25 +8,10 @@ const handleIoConnection = (socket) => {
     await responseGetChannels(socket, data);
   });
   socket.on('playerMovement', async (data) => {
-    const { userID, targetPosition } = data;
-    const socketRoomsSet = socket.rooms;
-    const socketRoomsArray = Array.from(socketRoomsSet);
-    const room = socketRoomsArray[1];
-    const [targetPositionX, targetPositionY] = targetPosition
-      .replace('(', '')
-      .replace(')', '')
-      .split(',');
-    socket.broadcast
-      .to(room)
-      .emit('playerMovement', {
-        userID,
-        targetPositionX: parseFloat(targetPositionX),
-        targetPositionY: parseFloat(targetPositionY),
-      });
+    await responsePlayerMovement(socket, data);
   });
-  socket.on('disconnect', () => {
-    console.log('Close connection');
-    socket.leave();
+  socket.on('disconnecting', () => {
+    handleSocketDisconnect(socket);
   });
 };
 

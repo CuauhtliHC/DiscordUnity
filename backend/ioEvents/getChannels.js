@@ -3,9 +3,10 @@ const { getGuildChannels } = require('../discordApi');
 const { getOnlineUsers } = require('../utils/discordUtils');
 
 const responseGetChannels = async (socket, data) => {
+  const socketsInRoom = await io.in(data.guildID).fetchSockets();
   const sockets = await io.fetchSockets();
   const oldSocket = sockets.find(
-    (socket) => socket.data.userId === data.userID,
+    (socketArray) => socketArray.data.userId === data.userID,
   );
   if (oldSocket) {
     oldSocket.emit(
@@ -14,13 +15,10 @@ const responseGetChannels = async (socket, data) => {
     );
     oldSocket.disconnect();
   }
-
+  const channels = await getGuildChannels(data.guildID);
+  const { channelData, usersOnline } = getOnlineUsers(channels, socketsInRoom);
   socket.data.userId = data.userID;
   socket.join(data.guildID);
-
-  const channels = await getGuildChannels(data.guildID);
-  const { channelData, usersOnline } = getOnlineUsers(channels);
-
   socket.emit('getChannels', {
     channels: channelData,
     usersOnline,

@@ -25,6 +25,8 @@ public class AddChannel : MonoBehaviour
     {
         public string UserName;
         public string UserId;
+        public float? positionX;
+        public float? positionY;
     }
 
     [Serializable]
@@ -127,15 +129,17 @@ public class AddChannel : MonoBehaviour
             {
                 ChannelsWithUsers channelWithUsers = listChannelsUsers.Dequeue();
                 GameObject channel = GameObject.Find(channelWithUsers.channelId);
-
-                Vector2 cordinatesChannel = new(channel.transform.position.x, channel.transform.position.y - 0.7536f);
-                Grid grid = parentObject.GetComponent<Grid>();
-                Vector3Int cellPosition = grid.WorldToCell(cordinatesChannel);
-                Vector3 center = grid.GetCellCenterWorld(cellPosition);
-                Vector2 center2D = new(center.x, center.y);
                 foreach (User user in channelWithUsers.users)
                 {
-                    userSpawn.InstantiateUserPrefab(user.UserName, user.UserId, channelWithUsers.channelId, prefabCharacter, parentObject, center2D);
+                    if(user.positionY != null || user.positionX != null )
+                    {
+                        float x = user.positionX ?? 0;
+                        float y = user.positionY ?? 0;
+                        userSpawn.InstantiateUserPrefab(user.UserName, user.UserId, channelWithUsers.channelId, prefabCharacter, parentObject, CreateVector2(x, y, 0));
+                    }
+                    else { 
+                    userSpawn.InstantiateUserPrefab(user.UserName, user.UserId, channelWithUsers.channelId, prefabCharacter, parentObject, CreateVector2(channel.transform.position.x, channel.transform.position.y, 0.7536f));
+                    }
                 }
             }
         }
@@ -143,5 +147,15 @@ public class AddChannel : MonoBehaviour
         {
             Debug.Log("Error al crear la instancia: " + ex.Message);
         }
+    }
+
+    private Vector2 CreateVector2 (float x, float y, float rest)
+    {
+        Vector2 cordinatesChannel = new(x, y - rest);
+        Grid grid = parentObject.GetComponent<Grid>();
+        Vector3Int cellPosition = grid.WorldToCell(cordinatesChannel);
+        Vector3 center = grid.GetCellCenterWorld(cellPosition);
+        Vector2 center2D = new(center.x, center.y);
+        return center2D;
     }
 }
