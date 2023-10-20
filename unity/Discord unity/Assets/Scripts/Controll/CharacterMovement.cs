@@ -34,6 +34,13 @@ public class CharacterMovement : MonoBehaviour
 
     void Update()
     {
+        HandleInput();
+        HandleReceiveMessage();
+        MoveCharacter();
+    }
+
+    private void HandleInput()
+    {
         if (Input.GetMouseButtonDown(1) && !isMoving)
         {
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -42,27 +49,34 @@ public class CharacterMovement : MonoBehaviour
             Vector2 center2D = new(center.x, center.y);
             targetPosition = center2D;
             RaycastHit2D hit = Physics2D.Raycast(center2D, Vector2.zero);
-
-            if (userName == GetUserId() && hit.collider != null)
+            if (userName == "278345841734057994" && hit.collider != null)
             {
                 string colliderName = hit.collider.gameObject.name;
                 if (userInfo.inChannel == colliderName)
                 {
-                    if (io.D.state == DataTypes.ConnectionState.CONNECTED)
-                    {
-                        var data = new
-                        {
-                            targetPosition = targetPosition.ToString(),
-                            userID = GetUserId()
-                        };
-                        io.D.Emit("playerMovement", data);
-                    }
+                    EmitPlayerMovement();
                     MoveToTarget();
                 }
             }
         }
+    }
 
-        if(messageReceived != null && transform.name == messageReceived.userID)
+    private void EmitPlayerMovement()
+    {
+        if (io.D.state == DataTypes.ConnectionState.CONNECTED)
+        {
+            var data = new
+            {
+                targetPosition = targetPosition.ToString(),
+                userID = "278345841734057994"
+            };
+            io.D.Emit("playerMovement", data);
+        }
+    }
+
+    private void HandleReceiveMessage()
+    {
+        if (messageReceived != null && transform.name == messageReceived.userID)
         {
             Vector3 positionPlayer = new(messageReceived.targetPositionX, messageReceived.targetPositionY);
             Vector3Int cellPosition = grid.WorldToCell(positionPlayer);
@@ -72,12 +86,14 @@ public class CharacterMovement : MonoBehaviour
             MoveToTarget();
             messageReceived = null;
         }
+    }
 
+    private void MoveCharacter()
+    {
         if (isMoving)
         {
             float step = 5f * Time.deltaTime;
             transform.position = Vector2.MoveTowards(transform.position, targetPosition, step);
-
             if (Vector2.Distance(transform.position, targetPosition) < 0.001f)
             {
                 isMoving = false;

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MovingToCenter : MonoBehaviour
@@ -15,7 +13,7 @@ public class MovingToCenter : MonoBehaviour
 
     void Update()
     {
-        if(messageReceived != null)
+        if(messageReceived == transform.name)
         {
             GameObject channel = GameObject.Find(userInfo.inChannel);
             transform.position = CreateVector2(channel.transform.position.x, channel.transform.position.y, 0.7536f);
