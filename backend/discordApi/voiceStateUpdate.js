@@ -1,34 +1,29 @@
 const { io } = require('../server.js');
 
+const emitEvent = (guildId, eventName, member, channel) => {
+  io.to(guildId).emit(eventName, {
+    userName: member.user.tag,
+    userId: member.user.id,
+    channelName: channel.name,
+    channelId: channel.id,
+  });
+};
+
 const voiceStateUpdateIo = (oldState, newState) => {
   const { guild, member } = newState;
   const { channel: newChannel } = newState;
   const { channel: oldChannel } = oldState;
 
   if (newChannel && !oldChannel) {
-    io.to(guild.id).emit('userJoinChannel', {
-      userName: member.user.tag,
-      userId: member.user.id,
-      channelName: newChannel.name,
-      channelId: newChannel.id,
-    });
+    emitEvent(guild.id, 'userJoinChannel', member, newChannel);
   }
 
   if (oldChannel && !newChannel) {
-    io.to(guild.id).emit('userLeftChannel', {
-      userName: member.user.tag,
-      userId: member.user.id,
-      channelName: oldChannel.name,
-      channelId: oldChannel.id,
-    });
+    emitEvent(guild.id, 'userLeftChannel', member, oldChannel);
   }
+
   if (oldChannel && newChannel && oldChannel !== newChannel.id) {
-    io.to(guild.id).emit('userSwitchedChannel', {
-      userName: member.user.tag,
-      userId: member.user.id,
-      channelName: newChannel.name,
-      channelId: newChannel.id,
-    });
+    emitEvent(guild.id, 'userSwitchedChannel', member, newChannel);
   }
 };
 
