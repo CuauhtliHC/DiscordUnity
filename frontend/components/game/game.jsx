@@ -20,8 +20,8 @@ const Game = () => {
         <iframe
           src={'/gameBuild/index.html'}
           title="Juego Unity WebGL"
-          width="1280"
-          height="720"
+          width="1300"
+          height="800"
         />
       )}
     </div>
