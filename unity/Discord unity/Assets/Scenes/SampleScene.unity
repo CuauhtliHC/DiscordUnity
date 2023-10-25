@@ -201,6 +201,7 @@ GameObject:
   m_Component:
   - component: {fileID: 105074324}
   - component: {fileID: 105074325}
+  - component: {fileID: 105074326}
   m_Layer: 5
   m_Name: ButtonsZone
   m_TagString: Untagged
@@ -260,6 +261,20 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &105074326
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 105074323}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3312d7739989d2b4e91e6319e9a96d76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding: {x: 0, y: 0, z: 0, w: 0}
+  m_Softness: {x: 0, y: 0}
 --- !u!1 &255965927
 GameObject:
   m_ObjectHideFlags: 0
@@ -368,8 +383,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -172.51624, y: -0.0000076293945}
-  m_SizeDelta: {x: 1611.3, y: 73.5408}
+  m_AnchoredPosition: {x: 213.6607, y: -0.0000076293945}
+  m_SizeDelta: {x: 1693.5574, y: 73.5408}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &378977650
 GameObject:
@@ -454,8 +469,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 863803507}
   m_HandleRect: {fileID: 863803506}
   m_Direction: 0
-  m_Value: 0.999954
-  m_Size: 0.7858473
+  m_Value: 0.00000014283192
+  m_Size: 0.74767816
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1717,8 +1732,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.0008544922, y: -0.02525711}
-  m_SizeDelta: {x: -6.5142, y: -8.5499}
+  m_AnchoredPosition: {x: 1.6290283, y: -0.02525711}
+  m_SizeDelta: {x: -3.2579, y: -8.5499}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1629193755
 MonoBehaviour:
@@ -1824,6 +1839,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 12cb0cde712abc24a9072670ff3a5129, type: 3}
   - {fileID: 21300000, guid: 7080b4f3b5b06d24885869dcf7e49286, type: 3}
   - {fileID: 21300000, guid: 50cea6cb76e9f7a4f804a782083a5c4c, type: 3}
+  - {fileID: 21300000, guid: 082debd8c2da2b643ae7ee55804d5b45, type: 3}
   buttonPrefab: {fileID: 6443923872986812581, guid: e4f1636d2b64d7f499a71fc01c0a0008, type: 3}
 --- !u!114 &1629193759
 MonoBehaviour:

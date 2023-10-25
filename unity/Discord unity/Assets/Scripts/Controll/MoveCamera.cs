@@ -13,22 +13,26 @@ public class MoveCamera : MonoBehaviour
         {
             return;
         }
-        if (Input.GetMouseButton(0))
+        if (Input.mousePosition.x >= 0 && Input.mousePosition.x < Screen.width &&
+            Input.mousePosition.y >= 0 && Input.mousePosition.y < Screen.height)
         {
-            Difference = (Camera.main.ScreenToWorldPoint(Input.mousePosition)) - Camera.main.transform.position;
-            if (!isDraggin)
+            if (Input.GetMouseButton(0))
             {
-                isDraggin = true;
-                Origin = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                Difference = (Camera.main.ScreenToWorldPoint(Input.mousePosition)) - Camera.main.transform.position;
+                if (!isDraggin)
+                {
+                    isDraggin = true;
+                    Origin = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                }
             }
-        }
-        else
-        {
-            isDraggin = false;
-        }
-        if (isDraggin)
-        {
-            Camera.main.transform.position = Origin - Difference;
+            else
+            {
+                isDraggin = false;
+            }
+            if (isDraggin)
+            {
+                Camera.main.transform.position = Origin - Difference;
+            }
         }
 
     }

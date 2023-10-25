@@ -49,7 +49,7 @@ public class CharacterMovement : MonoBehaviour
             Vector2 center2D = new(center.x, center.y);
             targetPosition = center2D;
             RaycastHit2D hit = Physics2D.Raycast(center2D, Vector2.zero);
-            if (userName == "278345841734057994" && hit.collider != null)
+            if (userName == GetUserId() && hit.collider != null)
             {
                 string colliderName = hit.collider.gameObject.name;
                 if (userInfo.inChannel == colliderName)
@@ -68,7 +68,7 @@ public class CharacterMovement : MonoBehaviour
             var data = new
             {
                 targetPosition = targetPosition.ToString(),
-                userID = "278345841734057994"
+                userID = GetUserId()
             };
             io.D.Emit("playerMovement", data);
         }

@@ -30,12 +30,13 @@ public class ConnectionWebSocket : MonoBehaviour
 
     void Start()
     {
+        Debug.Log(GetUserId());
         io.D.On("connect", () =>
         {
             var data = new
             {
-                guildID = "1087941237924966420",
-                userID = "278345841734057994"
+                guildID = GetGuildId(),
+                userID = GetUserId()
             };
             io.D.Emit("getChannels", data);
         });
