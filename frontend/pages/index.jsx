@@ -7,7 +7,6 @@ const LoginPage = () => {
   const { data } = useSession();
 
   useEffect(() => {
-    localStorage.removeItem('userId');
     localStorage.removeItem('guildId');
   }, []);
 

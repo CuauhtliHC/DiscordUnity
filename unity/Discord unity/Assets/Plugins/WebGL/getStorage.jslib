@@ -1,6 +1,6 @@
 mergeInto(LibraryManager.library, {
   GetUserId: function () {
-    const userId = localStorage.getItem('userId');
+    const userId = window.parent.getUser();
     const bufferSize = lengthBytesUTF8(userId) + 1;
     const buffer = _malloc(bufferSize);
     stringToUTF8(userId, buffer, bufferSize);

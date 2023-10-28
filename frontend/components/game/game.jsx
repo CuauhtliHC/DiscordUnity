@@ -11,7 +11,6 @@ const Game = () => {
   useEffect(() => {
     if (data) {
       setUserId(data.discordUser.id);
-      localStorage.setItem('userId', data.discordUser.id);
       localStorage.setItem('guildId', id);
     }
   }, [data, id]);

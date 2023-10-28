@@ -30,7 +30,6 @@ public class ConnectionWebSocket : MonoBehaviour
 
     void Start()
     {
-        Debug.Log(GetUserId());
         io.D.On("connect", () =>
         {
             var data = new
