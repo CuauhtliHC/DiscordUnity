@@ -5,6 +5,7 @@ public class JoinUser : MonoBehaviour
 {
     public GameObject parentObject;
     public GameObject prefabCharacter;
+    public GameObject parentToPj;
 
     private UserSpawn userSpawn;
     private class SocketMessage
@@ -31,13 +32,19 @@ public class JoinUser : MonoBehaviour
             Vector3Int cellPosition = grid.WorldToCell(cordinatesChannel);
             Vector3 center = grid.GetCellCenterWorld(cellPosition);
             Vector2 center2D = new(center.x, center.y);
+            parentToPj = GameObject.Find("ParentPj");
+            if(parentToPj == null)
+            {
+                parentToPj = new("ParentPj");
+                parentToPj.transform.parent = parentObject.transform;
+            }
             if (userObject != null)
             {
                 userObject.transform.position = center2D;
             }
             else
             {
-                userSpawn.InstantiateUserPrefab(messageReceived.UserName, messageReceived.UserId, messageReceived.ChannelId, prefabCharacter, parentObject, center2D);
+                userSpawn.InstantiateUserPrefab(messageReceived.UserName, messageReceived.UserId, messageReceived.ChannelId, prefabCharacter, parentToPj, center2D);
             }
             messageReceived = null;
         }

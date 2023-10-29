@@ -7,7 +7,9 @@ mergeInto(LibraryManager.library, {
     return buffer;
   },
   GetGuildId: function () {
-    const guildId = localStorage.getItem('guildId');
+    const queryString = window.parent.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const guildId = urlParams.get('id');
     const bufferSize = lengthBytesUTF8(guildId) + 1;
     const buffer = _malloc(bufferSize);
     stringToUTF8(guildId, buffer, bufferSize);

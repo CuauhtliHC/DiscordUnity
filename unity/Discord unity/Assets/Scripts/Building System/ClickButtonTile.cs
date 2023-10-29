@@ -8,6 +8,7 @@ public class ClickButtonTile : MonoBehaviour
     private string tileName;
     private Tile tileFound;
     public GameObject preInstance;
+    public GameObject prefabToBuild;
 
     private void Start()
     {
@@ -18,7 +19,7 @@ public class ClickButtonTile : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(GetPositionMouse(0), Vector2.zero);
         if (transform.name == tileName && GetPositionMouse(0) != previousMousePosition && preInstance != null)
         {
-            preInstance.transform.position = GetPositionMouse(-0.2512f);
+            preInstance.transform.position = GetPositionMouse(rest: 0.25f);
             if(hit.collider != null && Input.GetMouseButtonDown(1))
             {
                 Tilemap tilemap = hit.collider.gameObject.GetComponent<Tilemap>();
@@ -33,13 +34,18 @@ public class ClickButtonTile : MonoBehaviour
         Sprite sprite = Resources.Load<Sprite>("Sprites/Floor/" + transform.name);
         if (tile != null && sprite != null)
         {
+            prefabToBuild = GameObject.Find("preInstance");
+            if(prefabToBuild != null)
+            {
+                Destroy(prefabToBuild);
+            }
             tileFound = tile;
             preInstance = new ("preInstance");
             preInstance.AddComponent<SpriteRenderer>();
             preInstance.GetComponent<SpriteRenderer>().sprite = sprite;
             SpriteRenderer spriteRenderer = preInstance.GetComponent<SpriteRenderer>();
             spriteRenderer.color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
-            preInstance.transform.position = GetPositionMouse(-0.2512f);
+            preInstance.transform.position = GetPositionMouse(rest: 0.25f);
             preInstance.transform.parent = grid.transform;
         } else
         {

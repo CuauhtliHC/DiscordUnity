@@ -43,6 +43,7 @@ public class AddChannel : MonoBehaviour
     public GameObject prefabToSpawn;
     public GameObject parentObject;
     public GameObject prefabCharacter;
+    public GameObject parentToPj;
 
 
     void Start()
@@ -135,10 +136,23 @@ public class AddChannel : MonoBehaviour
                     {
                         float x = user.positionX ?? 0;
                         float y = user.positionY ?? 0;
-                        userSpawn.InstantiateUserPrefab(user.UserName, user.UserId, channelWithUsers.channelId, prefabCharacter, parentObject, CreateVector2(x, y, 0));
+                        parentToPj = GameObject.Find("ParentPj");
+                        if(parentToPj == null)
+                        {
+                            parentToPj = new("ParentPj");
+                            parentToPj.transform.parent = parentObject.transform;
+                        }
+                        userSpawn.InstantiateUserPrefab(user.UserName, user.UserId, channelWithUsers.channelId, prefabCharacter, parentToPj, CreateVector2(x, y, 0));
                     }
-                    else { 
-                    userSpawn.InstantiateUserPrefab(user.UserName, user.UserId, channelWithUsers.channelId, prefabCharacter, parentObject, CreateVector2(channel.transform.position.x, channel.transform.position.y, 0.7536f));
+                    else 
+                    {
+                        parentToPj = GameObject.Find("ParentPj");
+                        if (parentToPj == null)
+                        {
+                            parentToPj = new("ParentPj");
+                            parentToPj.transform.parent = parentObject.transform;
+                        }
+                        userSpawn.InstantiateUserPrefab(user.UserName, user.UserId, channelWithUsers.channelId, prefabCharacter, parentToPj, CreateVector2(channel.transform.position.x, channel.transform.position.y, 0.7536f));
                     }
                 }
             }

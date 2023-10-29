@@ -1114,6 +1114,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 893783656}
   m_CullTransparentMesh: 1
+--- !u!1 &933650041
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 933650042}
+  m_Layer: 0
+  m_Name: ParentPj
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &933650042
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 933650041}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1116437505}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1116437503
 GameObject:
   m_ObjectHideFlags: 0
@@ -1156,6 +1187,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 519420032}
+  - {fileID: 933650042}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1418,6 +1450,7 @@ MonoBehaviour:
   prefabToSpawn: {fileID: 6924124059249347523, guid: d19b7a494fb5432468f78e414b2718e8, type: 3}
   parentObject: {fileID: 1116437503}
   prefabCharacter: {fileID: 274005593502977819, guid: c900c025dd573b942beb57ee33f4d30c, type: 3}
+  parentToPj: {fileID: 0}
 --- !u!114 &1249042894
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1444,6 +1477,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parentObject: {fileID: 1116437503}
   prefabCharacter: {fileID: 274005593502977819, guid: c900c025dd573b942beb57ee33f4d30c, type: 3}
+  parentToPj: {fileID: 0}
 --- !u!114 &1249042896
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1955,6 +1989,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   panelMenu: {fileID: 1344931677}
   buttonMove: {fileID: 2025970226}
+  prefabToBuild: {fileID: 0}
+  parentToPj: {fileID: 933650041}
 --- !u!114 &1851842586
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2336,3 +2372,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   panelMenu: {fileID: 1344931677}
+  parentToPj: {fileID: 933650041}
