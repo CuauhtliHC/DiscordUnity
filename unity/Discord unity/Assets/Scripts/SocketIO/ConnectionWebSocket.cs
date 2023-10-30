@@ -34,7 +34,7 @@ public class ConnectionWebSocket : MonoBehaviour
         {
             var data = new
             {
-                guildID = "482690190838857730",
+                guildID = "1087941237924966420",
                 userID = "278345841734057994"
             };
             io.D.Emit("getChannels", data);

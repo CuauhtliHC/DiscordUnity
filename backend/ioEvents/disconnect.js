@@ -1,7 +1,6 @@
 const handleSocketDisconnect = (socket) => {
   for (const room of socket.rooms) {
     if (room !== socket.id) {
-      console.log(room);
       socket.to(room).emit('userHasLeftRoom', socket.data.userId);
     }
   }

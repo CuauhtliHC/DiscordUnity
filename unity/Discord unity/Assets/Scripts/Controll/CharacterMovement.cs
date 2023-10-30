@@ -41,7 +41,8 @@ public class CharacterMovement : MonoBehaviour
 
     private void HandleInput()
     {
-        if (Input.GetMouseButtonDown(1) && !isMoving)
+        SpriteRenderer spriteRenderer = transform.GetComponent<SpriteRenderer>();
+        if (Input.GetMouseButtonDown(1) && !isMoving && spriteRenderer.color != new Color(1.0f, 1.0f, 1.0f, 0f))
         {
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector3Int cellPosition = grid.WorldToCell(mousePosition);
