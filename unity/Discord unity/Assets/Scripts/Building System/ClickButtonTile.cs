@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.InputSystem;
 
 public class ClickButtonTile : MonoBehaviour
 {
@@ -20,7 +21,7 @@ public class ClickButtonTile : MonoBehaviour
         if (transform.name == tileName && GetPositionMouse(0) != previousMousePosition && preInstance != null)
         {
             preInstance.transform.position = GetPositionMouse(rest: 0.25f);
-            if(hit.collider != null && Input.GetMouseButtonDown(1))
+            if(hit.collider != null && Mouse.current.leftButton.wasPressedThisFrame)
             {
                 Tilemap tilemap = hit.collider.gameObject.GetComponent<Tilemap>();
                 tilemap.SetTile(GetPositionMouseInt(), tileFound);
