@@ -23,6 +23,7 @@ public class ClickButtonTile : MonoBehaviour
             preInstance.transform.position = GetPositionMouse(rest: 0.25f);
             if(hit.collider != null && Mouse.current.leftButton.wasPressedThisFrame)
             {
+                Debug.Log("2do if");
                 Tilemap tilemap = hit.collider.gameObject.GetComponent<Tilemap>();
                 tilemap.SetTile(GetPositionMouseInt(), tileFound);
             }
@@ -52,7 +53,6 @@ public class ClickButtonTile : MonoBehaviour
         {
             Debug.Log("Tile Not Found");
         }
-        Debug.Log(transform.name);
         tileName = transform.name;
     }
 

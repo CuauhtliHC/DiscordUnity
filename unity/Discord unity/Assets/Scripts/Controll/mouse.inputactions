@@ -1,0 +1,34 @@
+{
+    "name": "mouse",
+    "maps": [
+        {
+            "name": "Camera",
+            "id": "8bc0e9d1-9478-47d7-86a9-ed5a9a35b790",
+            "actions": [
+                {
+                    "name": "Move",
+                    "type": "Button",
+                    "id": "5b823350-020e-4a5f-9faa-a2e0e619b918",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "59c9593d-2a44-43ce-84ec-634180c205b9",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
