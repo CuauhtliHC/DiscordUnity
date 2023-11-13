@@ -24,8 +24,14 @@ public class CharacterMovement : MonoBehaviour
         userName = gameObject.name;
         userInfo = GetComponent<UserInfo>();
         io = GameObject.Find("SocketIOSample").GetComponent<SocketIOClient>();
+        
     }
 
+    private void Awake()
+    {
+        InputAction moveChacter = transform.GetComponent<PlayerInput>().actions["ClickAndMove"];
+        moveChacter.performed += context => HandleInput(context);
+    }
     private class SocketMessage
     {
         public float targetPositionX;
@@ -35,15 +41,14 @@ public class CharacterMovement : MonoBehaviour
 
     void Update()
     {
-        HandleInput();
         HandleReceiveMessage();
         MoveCharacter();
     }
 
-    private void HandleInput()
+    public void HandleInput(InputAction.CallbackContext ctx)
     {
         SpriteRenderer spriteRenderer = transform.GetComponent<SpriteRenderer>();
-        if (Mouse.current.leftButton.wasPressedThisFrame && !isMoving && spriteRenderer.color != new Color(1.0f, 1.0f, 1.0f, 0f))
+        if (ctx.performed && !isMoving && spriteRenderer.color != new Color(1.0f, 1.0f, 1.0f, 0f))
         {
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector3Int cellPosition = grid.WorldToCell(mousePosition);
