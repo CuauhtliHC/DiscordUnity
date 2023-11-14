@@ -29,7 +29,7 @@ public class CharacterMovement : MonoBehaviour
 
     private void Awake()
     {
-        InputAction moveChacter = transform.GetComponent<PlayerInput>().actions["ClickAndMove"];
+        InputAction moveChacter = transform.GetComponent<PlayerInput>().actions.FindAction("ClickAndMove");
         moveChacter.performed += context => HandleInput(context);
     }
     private class SocketMessage
@@ -50,7 +50,7 @@ public class CharacterMovement : MonoBehaviour
         SpriteRenderer spriteRenderer = transform.GetComponent<SpriteRenderer>();
         if (ctx.performed && !isMoving && spriteRenderer.color != new Color(1.0f, 1.0f, 1.0f, 0f))
         {
-            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
             Vector3Int cellPosition = grid.WorldToCell(mousePosition);
             Vector3 center = grid.GetCellCenterWorld(cellPosition);
             Vector2 center2D = new(center.x, center.y);

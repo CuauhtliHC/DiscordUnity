@@ -58,7 +58,7 @@ public class ClickButtonTile : MonoBehaviour
 
     public Vector2 GetPositionMouse(float rest)
     {
-        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
         Vector3Int cellPosition = grid.WorldToCell(mousePosition);
         Vector3 center = grid.GetCellCenterWorld(cellPosition);
         Vector2 center2D = new(center.x, center.y - rest);
@@ -67,7 +67,7 @@ public class ClickButtonTile : MonoBehaviour
 
     public Vector3Int GetPositionMouseInt()
     {
-        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
         Vector3Int cellPosition = grid.WorldToCell(mousePosition);
         return cellPosition;
     }
