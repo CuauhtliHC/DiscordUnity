@@ -11,7 +11,7 @@
                     "id": "d2b0cd25-f9e5-4e94-b58d-fbaa276f3eb9",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press(behavior=2)",
+                    "interactions": "",
                     "initialStateCheck": false
                 }
             ],
@@ -20,7 +20,7 @@
                     "name": "",
                     "id": "35eebd29-a41f-4832-bcfc-5285e46a8c89",
                     "path": "<Mouse>/leftButton",
-                    "interactions": "",
+                    "interactions": "Tap",
                     "processors": "",
                     "groups": "",
                     "action": "ClickAndMove",

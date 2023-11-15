@@ -61,6 +61,7 @@ public class CharacterMovement : MonoBehaviour
                 string colliderName = hit.collider.gameObject.name;
                 if (userInfo.inChannel == colliderName)
                 {
+                    Debug.Log(ctx.interaction);
                     EmitPlayerMovement();
                     MoveToTarget();
                 }
