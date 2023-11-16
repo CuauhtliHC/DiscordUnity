@@ -6,17 +6,23 @@ using UnityEngine.InputSystem;
 public class CharacterMovement : MonoBehaviour
 {
     private Grid grid;
-
     private Vector2 targetPosition;
     private bool isMoving = false;
     private string userName;
     private UserInfo userInfo;
+    private SocketMessage messageReceived;
 
     [DllImport("__Internal")]
     private static extern string GetUserId();
 
     public SocketIOClient io;
 
+    private class SocketMessage
+    {
+        public float targetPositionX;
+        public float targetPositionY;
+        public string userID;
+    }
     void Start()
     {
         ConnectionWebSocket.OnUserMoventReceived += OnMessageReceived;
@@ -24,7 +30,7 @@ public class CharacterMovement : MonoBehaviour
         userName = gameObject.name;
         userInfo = GetComponent<UserInfo>();
         io = GameObject.Find("SocketIOSample").GetComponent<SocketIOClient>();
-        
+
     }
 
     private void Awake()
@@ -32,12 +38,7 @@ public class CharacterMovement : MonoBehaviour
         InputAction moveChacter = transform.GetComponent<PlayerInput>().actions.FindAction("ClickAndMove");
         moveChacter.performed += context => HandleInput(context);
     }
-    private class SocketMessage
-    {
-        public float targetPositionX;
-        public float targetPositionY;
-        public string userID;
-    }
+
 
     void Update()
     {
@@ -47,24 +48,22 @@ public class CharacterMovement : MonoBehaviour
 
     public void HandleInput(InputAction.CallbackContext ctx)
     {
+        if (!ctx.performed || isMoving) return;
         SpriteRenderer spriteRenderer = transform.GetComponent<SpriteRenderer>();
-        if (ctx.performed && !isMoving && spriteRenderer.color != new Color(1.0f, 1.0f, 1.0f, 0f))
+        if (spriteRenderer.color == new Color(1.0f, 1.0f, 1.0f, 0f)) return;
+        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+        Vector3Int cellPosition = grid.WorldToCell(mousePosition);
+        Vector3 center = grid.GetCellCenterWorld(cellPosition);
+        Vector2 center2D = new(center.x, center.y);
+        targetPosition = center2D;
+        RaycastHit2D hit = Physics2D.Raycast(center2D, Vector2.zero);
+        if (userName == "278345841734057994" && hit.collider != null)
         {
-            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-            Vector3Int cellPosition = grid.WorldToCell(mousePosition);
-            Vector3 center = grid.GetCellCenterWorld(cellPosition);
-            Vector2 center2D = new(center.x, center.y);
-            targetPosition = center2D;
-            RaycastHit2D hit = Physics2D.Raycast(center2D, Vector2.zero);
-            if (userName == "278345841734057994" && hit.collider != null)
+            string colliderName = hit.collider.gameObject.name;
+            if (userInfo.inChannel == colliderName)
             {
-                string colliderName = hit.collider.gameObject.name;
-                if (userInfo.inChannel == colliderName)
-                {
-                    Debug.Log(ctx.interaction);
-                    EmitPlayerMovement();
-                    MoveToTarget();
-                }
+                EmitPlayerMovement();
+                MoveToTarget();
             }
         }
     }
@@ -116,7 +115,6 @@ public class CharacterMovement : MonoBehaviour
         messageReceived = dataReceived;
     }
 
-    private SocketMessage messageReceived;
     void MoveToTarget()
     {
         if (!isMoving)
