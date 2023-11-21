@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using TMPro;
 public class ExitMenu : MonoBehaviour
 {
@@ -6,6 +7,7 @@ public class ExitMenu : MonoBehaviour
     public GameObject buttonMove;
     public GameObject prefabToBuild;
     public GameObject parentToPj;
+    public GameObject parentChannel;
     public void IWasClicked()
     {
         if (parentToPj != null)
@@ -30,6 +32,12 @@ public class ExitMenu : MonoBehaviour
         if (prefabToBuild != null)
         {
             Destroy(prefabToBuild);
+        }
+        foreach (Transform child in parentChannel.transform)
+        {
+            Tilemap tilemapComponent = child.GetComponent<Tilemap>();
+            Vector3Int vec = new(0, 0, 0);
+            Debug.Log(tilemapComponent.GetTile(vec));
         }
     }
 }
