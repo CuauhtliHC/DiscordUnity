@@ -35,9 +35,16 @@ public class ExitMenu : MonoBehaviour
         }
         foreach (Transform child in parentChannel.transform)
         {
-            Tilemap tilemapComponent = child.GetComponent<Tilemap>();
-            Vector3Int vec = new(0, 0, 0);
-            Debug.Log(tilemapComponent.GetTile(vec));
+            Tilemap tilemapComponent = child.GetComponent<Tilemap>(); 
+            for(int x = 0; x <= 4; x++)
+            {
+                for(int y = 0; y <= 4; y++)
+                {
+                    Vector3Int vec = new(x, y, 0);
+                    Debug.Log("Vector: " + x + " " + y + "Tile: " + tilemapComponent.GetTile(vec));
+                }    
+            }
+            
         }
     }
 }
