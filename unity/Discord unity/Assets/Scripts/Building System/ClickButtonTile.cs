@@ -4,10 +4,10 @@ using UnityEngine.InputSystem;
 
 public class ClickButtonTile : MonoBehaviour
 {
-    private Grid grid;
-    private Vector2 previousMousePosition;
-    private string tileName;
-    private Tile tileFound;
+    public Grid grid;
+    public Vector2 previousMousePosition;
+    public string tileName;
+    public Tile tileFound;
     public GameObject preInstance;
     public GameObject prefabToBuild;
 
@@ -21,7 +21,7 @@ public class ClickButtonTile : MonoBehaviour
         if (transform.name == tileName && GetPositionMouse(0) != previousMousePosition && preInstance != null)
         {
             preInstance.transform.position = GetPositionMouse(rest: 0.25f);
-            if(hit.collider != null && Mouse.current.leftButton.wasPressedThisFrame)
+            if(Mouse.current.rightButton.wasPressedThisFrame)
             {
                 Debug.Log("2do if");
                 Tilemap tilemap = hit.collider.gameObject.GetComponent<Tilemap>();
