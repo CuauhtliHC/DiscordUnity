@@ -10,25 +10,30 @@ public class ClickButtonTile : MonoBehaviour
     public Tile tileFound;
     public GameObject preInstance;
     public GameObject prefabToBuild;
+    public RaycastHit2D hit;
 
     private void Start()
     {
         grid = FindObjectOfType<Grid>();
     }
-    void Update()
-    {
-        RaycastHit2D hit = Physics2D.Raycast(GetPositionMouse(0), Vector2.zero);
+    public void Update()
+    {   
         if (transform.name == tileName && GetPositionMouse(0) != previousMousePosition && preInstance != null)
         {
-            preInstance.transform.position = GetPositionMouse(rest: 0.25f);
-            if(Mouse.current.rightButton.wasPressedThisFrame)
-            {
-                Debug.Log("2do if");
-                Tilemap tilemap = hit.collider.gameObject.GetComponent<Tilemap>();
-                tilemap.SetTile(GetPositionMouseInt(), tileFound);
-            }
+            hit = Physics2D.Raycast(GetPositionMouse(0), Vector2.zero);
+            preInstance.transform.position = GetPositionMouse(rest: 0.25f);           
         }
         previousMousePosition = GetPositionMouse(0);
+    }
+
+    public void ClickToSpawn()
+    {
+        if (hit.collider != null)
+        {
+            Tilemap tilemap = hit.collider.gameObject.GetComponent<Tilemap>();
+            Vector3Int cellPosition = tilemap.WorldToCell(GetPositionMouse(0));
+            tilemap.SetTile(cellPosition, tileFound);
+        }
     }
     public void IWasClicked()
     {

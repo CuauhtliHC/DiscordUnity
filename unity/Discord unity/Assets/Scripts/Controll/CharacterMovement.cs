@@ -10,6 +10,7 @@ public class CharacterMovement : MonoBehaviour
     private bool isMoving = false;
     private string userName;
     private UserInfo userInfo;
+    private static readonly Color transparentWhite = new Color(1.0f, 1.0f, 1.0f, 0f);
     private SocketMessage messageReceived;
 
     [DllImport("__Internal")]
@@ -50,7 +51,7 @@ public class CharacterMovement : MonoBehaviour
     {
         if (!ctx.performed || isMoving) return;
         SpriteRenderer spriteRenderer = transform.GetComponent<SpriteRenderer>();
-        if (spriteRenderer.color == new Color(1.0f, 1.0f, 1.0f, 0f)) return;
+        if (spriteRenderer.color == transparentWhite) return;
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
         Vector3Int cellPosition = grid.WorldToCell(mousePosition);
         Vector3 center = grid.GetCellCenterWorld(cellPosition);
