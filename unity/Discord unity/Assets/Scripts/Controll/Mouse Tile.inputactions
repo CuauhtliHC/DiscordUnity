@@ -1,0 +1,34 @@
+{
+    "name": "Mouse Tile",
+    "maps": [
+        {
+            "name": "Spawn",
+            "id": "02e5716a-fe08-49fc-b246-1a9c69ada34b",
+            "actions": [
+                {
+                    "name": "Click",
+                    "type": "Button",
+                    "id": "35dd9f02-3a32-4c55-8fc9-065bd8e2280d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "62384840-99f7-4b36-8129-4ad614be7d8f",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "Tap",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Click",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
