@@ -10,6 +10,9 @@ const handleIoConnection = (socket) => {
   socket.on('playerMovement', async (data) => {
     await responsePlayerMovement(socket, data);
   });
+  socket.on('updateGuild', async (data) => {
+    console.log(data);
+  });
   socket.on('disconnecting', () => {
     handleSocketDisconnect(socket);
   });

@@ -4,6 +4,7 @@ const express = require('express');
 const cors = require('cors');
 const { Server } = require('socket.io');
 const db = require('./config/db');
+const { Channels, Coordinates, Guilds } = require('./models');
 
 config();
 
