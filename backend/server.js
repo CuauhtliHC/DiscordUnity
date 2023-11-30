@@ -1,10 +1,11 @@
 const http = require('http');
-const dotenv = require('dotenv');
+const { config } = require('dotenv');
 const express = require('express');
 const cors = require('cors');
 const { Server } = require('socket.io');
+const db = require('./config/db');
 
-dotenv.config();
+config();
 
 const app = express();
 app.use(
@@ -27,8 +28,15 @@ app.use((err, req, res, next) => {
 });
 
 const server = http.createServer(app);
-
-app.listen(3001, () => console.log('Servidor escuchando en el puerto 3001'));
+app.listen(3001, async () => {
+  console.log('Server running on port 3001');
+  try {
+    await db.sync({ force: false });
+    console.log('Connection to database has been established successfully.');
+  } catch (error) {
+    console.error('Unable to connect to the database:', error);
+  }
+});
 
 const io = new Server({
   cors: {

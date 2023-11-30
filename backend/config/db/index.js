@@ -1,8 +1,18 @@
 const Sequelize = require('sequelize');
-const db = new Sequelize('gameDiscord', null, null, {
-  host: 'localhost',
-  dialect: 'postgres',
-  logging: false,
-});
+const { config } = require('dotenv');
+
+config();
+
+const db = new Sequelize(
+  process.env.DBNAME,
+  process.env.USERDB,
+  process.env.PWDB,
+  {
+    host: 'localhost',
+    dialect: 'postgres',
+    port: process.env.PORT,
+    logging: false,
+  },
+);
 
 module.exports = db;
