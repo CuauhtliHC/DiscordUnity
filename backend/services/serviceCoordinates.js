@@ -16,6 +16,13 @@ const assingCoordinatesToChannel = async (channels, data) => {
           coordinate.tileName,
         );
         await channel.addCoordinate(coordinateCreate);
+      } else {
+        await updateCoordinate(
+          coordinate.X,
+          coordinate.Y,
+          coordinate.tileName,
+          channel,
+        );
       }
     });
   }
@@ -48,4 +55,37 @@ const createCoordinate = async (coordinateX, coordinateY, tileName) => {
   return coordinate;
 };
 
-module.exports = { assingCoordinatesToChannel };
+const updateCoordinate = async (
+  coordinateX,
+  coordinateY,
+  tileName,
+  channel,
+) => {
+  await Coordinates.update(
+    { tileName: tileName },
+    {
+      where: {
+        coordinateX: coordinateX,
+        coordinateY: coordinateY,
+        ChannelId: channel.id,
+      },
+    },
+  );
+};
+
+const getAllOfCoordinates = async (channel) => {
+  const coordinates = await Coordinates.findAll({
+    where: {
+      ChannelId: channel.id,
+    },
+  });
+  return coordinates;
+};
+
+module.exports = {
+  assingCoordinatesToChannel,
+  checkExistCoordinateInChannel,
+  createCoordinate,
+  updateCoordinate,
+  getAllOfCoordinates,
+};

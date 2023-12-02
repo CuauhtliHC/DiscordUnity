@@ -1,5 +1,12 @@
-const { assingChannelsToGuild } = require('./serviceChannels');
-const { assingCoordinatesToChannel } = require('./serviceCoordinates');
+const {
+  assingChannelsToGuild,
+  getAllChannelsOfGuild,
+} = require('./serviceChannels');
+const {
+  assingCoordinatesToChannel,
+  checkExistCoordinateInChannel,
+  getAllOfCoordinates,
+} = require('./serviceCoordinates');
 const { getOrCreateGuild } = require('./serviceGuild');
 
 const proccessData = async (data, guildId, channelsId) => {
@@ -10,4 +17,16 @@ const proccessData = async (data, guildId, channelsId) => {
   }
 };
 
-module.exports = { proccessData };
+const getDataOfGuild = async (guildId) => {
+  const guild = await getOrCreateGuild(guildId);
+  const channels = await getAllChannelsOfGuild(guild.id);
+  const coordinates = await Promise.all(
+    channels.map(async (channel) => {
+      const dataChannel = await getAllOfCoordinates(channel);
+      return { [channel.id]: dataChannel };
+    }),
+  );
+  return coordinates;
+};
+
+module.exports = { proccessData, getDataOfGuild };

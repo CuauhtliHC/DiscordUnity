@@ -40,8 +40,18 @@ const createManyChannels = async (channelsId) => {
   return channels;
 };
 
+const getAllChannelsOfGuild = async (guildId) => {
+  const channels = await Channels.findAll({
+    where: {
+      GuildId: guildId,
+    },
+  });
+  return channels;
+};
+
 module.exports = {
   assingChannelsToGuild,
   checkExistManyChannels,
   createManyChannels,
+  getAllChannelsOfGuild,
 };
