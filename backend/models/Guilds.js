@@ -3,7 +3,7 @@ const sequelize = require('../config/db');
 
 const Guilds = sequelize.define('Guilds', {
   id: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.BIGINT,
     primaryKey: true,
   },
 });

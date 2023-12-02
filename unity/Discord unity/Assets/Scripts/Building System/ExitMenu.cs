@@ -60,13 +60,12 @@ public class ExitMenu : MonoBehaviour
                 {
                     Vector3Int vec = new(x, y, 0);
                     TileBase tile = tilemapComponent.GetTile(vec);
-                    var objVector = new { X = x, Y = y, Tilename = tile.name };
+                    var objVector = new { X = x, Y = y, tileName = tile.name };
                     dataVectors[child.name].Add(objVector);
                 }    
             }
             
         }
-        Debug.Log("Data: " + dataVectors);
         io.D.Emit("updateGuild", dataVectors);
     }
 }

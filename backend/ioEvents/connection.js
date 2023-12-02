@@ -1,6 +1,7 @@
 const { handleSocketDisconnect } = require('./disconnect');
 const { responseGetChannels } = require('./getChannels');
 const { responsePlayerMovement } = require('./playerMovement');
+const { responseUpdateGuild } = require('./updateGuild');
 
 const handleIoConnection = (socket) => {
   console.log('New connection socket io');
@@ -11,7 +12,7 @@ const handleIoConnection = (socket) => {
     await responsePlayerMovement(socket, data);
   });
   socket.on('updateGuild', async (data) => {
-    console.log(data);
+    await responseUpdateGuild(socket, data);
   });
   socket.on('disconnecting', () => {
     handleSocketDisconnect(socket);

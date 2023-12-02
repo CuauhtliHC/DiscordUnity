@@ -3,7 +3,7 @@ const sequelize = require('../config/db');
 
 const Channels = sequelize.define('Channels', {
   id: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.BIGINT,
     primaryKey: true,
   },
 });
