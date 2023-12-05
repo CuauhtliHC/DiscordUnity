@@ -26,7 +26,11 @@ const getDataOfGuild = async (guildId) => {
       return { [channel.id]: dataChannel };
     }),
   );
-  return coordinates;
+  return coordinates.reduce((obj, item) => {
+    const [key, value] = Object.entries(item)[0];
+    obj[key] = value;
+    return obj;
+  }, {});
 };
 
 module.exports = { proccessData, getDataOfGuild };

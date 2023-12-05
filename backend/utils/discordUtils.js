@@ -1,4 +1,4 @@
-const getOnlineUsers = (channels, socketsInRoom) => {
+const getOnlineUsers = (channels, socketsInRoom, dataChannels) => {
   const channelData = [];
   const usersOnline = [];
 
@@ -24,12 +24,10 @@ const getOnlineUsers = (channels, socketsInRoom) => {
         users: usersInChannel,
       });
     }
-  });
-
-  voiceChannels.forEach((channel) => {
     channelData.push({
-      id: channel.id,
-      name: channel.name,
+      id: voiceChannel.id,
+      name: voiceChannel.name,
+      coordinatesArray: dataChannels[voiceChannel.id] ?? null,
     });
   });
 

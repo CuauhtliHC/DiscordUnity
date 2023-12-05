@@ -2055,6 +2055,7 @@ MonoBehaviour:
   prefabToBuild: {fileID: 0}
   parentToPj: {fileID: 933650041}
   parentChannel: {fileID: 1980778060}
+  io: {fileID: 0}
 --- !u!114 &1851842586
 MonoBehaviour:
   m_ObjectHideFlags: 0
