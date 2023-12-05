@@ -18,19 +18,12 @@ const responseGetChannels = async (socket, data) => {
     );
     oldSocket.disconnect();
   }
-  const channels = await getGuildChannels(data.guildID);
-  const { channelData, usersOnline } = getOnlineUsers(
-    channels,
-    socketsInRoom,
-    dataChannels,
-  );
-  console.log(channelData);
-  console.log(usersOnline);
+  const channels = await getGuildChannels(guildID);
+  const { channelData } = getOnlineUsers(channels, socketsInRoom, dataChannels);
   socket.data.userId = data.userID;
-  socket.join(data.guildID);
+  socket.join(guildID);
   socket.emit('getChannels', {
     channels: channelData,
-    usersOnline,
   });
 };
 
