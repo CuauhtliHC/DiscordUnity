@@ -27,19 +27,16 @@ public class JoinUser : MonoBehaviour
         {
             GameObject userObject = GameObject.Find(messageReceived.UserId);
             GameObject channel = GameObject.Find(messageReceived.ChannelId);
-            Vector2 cordinatesChannel = new(channel.transform.position.x, channel.transform.position.y - 0.7536f);
+            Vector2 cordinatesChannel = new(channel.transform.position.x, channel.transform.position.y);
             Grid grid = parentObject.GetComponent<Grid>();
             Vector3Int cellPosition = grid.WorldToCell(cordinatesChannel);
             Vector3 center = grid.GetCellCenterWorld(cellPosition);
             Vector2 center2D = new(center.x, center.y);
             parentToPj = GameObject.Find("ParentPj");
-            if(parentToPj == null)
-            {
-                parentToPj = new("ParentPj");
-                parentToPj.transform.parent = parentObject.transform;
-            }
             if (userObject != null)
             {
+                UserInfo userInfo = userObject.GetComponent<UserInfo>();
+                userInfo.inChannel = messageReceived.ChannelId;
                 userObject.transform.position = center2D;
             }
             else

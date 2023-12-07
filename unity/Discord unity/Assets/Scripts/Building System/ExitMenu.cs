@@ -6,13 +6,6 @@ using Firesplash.GameDevAssets.SocketIOPlus;
 public class ExitMenu : MonoBehaviour
 {
     private Dictionary<string, List<object>> dataVectors = new();
-    private struct objVector
-    {
-        public string channel;
-        public int X;
-        public int Y;
-        public TileBase Tilename;
-    }
 
     public GameObject panelMenu;
     public GameObject buttonMove;

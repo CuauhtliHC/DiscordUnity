@@ -26,11 +26,11 @@ public class SwitchUser : MonoBehaviour
         {
             GameObject userObject = GameObject.Find(messageReceived.UserId);
             GameObject channel = GameObject.Find(messageReceived.ChannelId);
-            Vector2 cordinatesChannel = new Vector2(channel.transform.position.x, channel.transform.position.y - 0.7536f);
+            Vector2 cordinatesChannel = new (channel.transform.position.x, channel.transform.position.y);
             Grid grid = parentObject.GetComponent<Grid>();
             Vector3Int cellPosition = grid.WorldToCell(cordinatesChannel);
             Vector3 center = grid.GetCellCenterWorld(cellPosition);
-            Vector2 center2D = new Vector2(center.x, center.y);
+            Vector2 center2D = new (center.x, center.y);
             if (userObject != null)
             {
                 UserInfo userInfo = userObject.GetComponent<UserInfo>();
