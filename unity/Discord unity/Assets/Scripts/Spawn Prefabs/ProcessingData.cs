@@ -62,7 +62,6 @@ public class ProcessingData : MonoBehaviour
     private void Update()
     {
         InstantiateChannel();
-        //InstantiateUser();
     }
 
     private void HandleWebSocketMessage(SocketIOEvent ioEvent)
@@ -81,21 +80,6 @@ public class ProcessingData : MonoBehaviour
             {
                 channelsQueue.Enqueue(channel);
             }
-            //foreach (ChannelData channel in dataReceived.channels)
-            //{
-            //    channelsQueue.Enqueue(channel);
-            //}
-            //if (dataReceived.usersOnline != null && dataReceived.usersOnline.Count > 0)
-            //{
-            //    foreach (ChannelsWithUsers channelWithUsers in dataReceived.usersOnline)
-            //    {
-            //        listChannelsUsers.Enqueue(channelWithUsers);
-            //    }
-            //}
-            //else
-            //{
-            //    Debug.Log("La lista de usuarios en línea está vacía o nula.");
-            //}
         }
         catch (Exception e)
         {
@@ -122,65 +106,24 @@ public class ProcessingData : MonoBehaviour
                 {
                     foreach (User user in channel.users)
                     {
-                        float x = user.positionX ?? 2;
-                        float y = user.positionY ?? 2;
+                        float x = user.positionX ?? 0;
+                        float y = user.positionY ?? 0;
                         userSpawn.InstantiateUserPrefab(user.UserName, user.UserId, user.channelId, prefabCharacter, parentToPj, CreateVector2(x, y, 0, channel.id));
                     }
                 }
             }
     }
 
-    //private void InstantiateUser()
-    //{
-    //    try
-    //    {
-    //        while (listChannelsUsers.Count > 0)
-    //        {
-    //            ChannelsWithUsers channelWithUsers = listChannelsUsers.Dequeue();
-    //            GameObject channel = GameObject.Find(channelWithUsers.channelId);
-    //            foreach (User user in channelWithUsers.users)
-    //            {
-    //                if(user.positionY != null || user.positionX != null )
-    //                {
-    //                    float x = user.positionX ?? 0;
-    //                    float y = user.positionY ?? 0;
-    //                    parentToPj = GameObject.Find("ParentPj");
-    //                    if(parentToPj == null)
-    //                    {
-    //                        parentToPj = new("ParentPj");
-    //                        parentToPj.transform.parent = parentObject.transform;
-    //                    }
-    //                    userSpawn.InstantiateUserPrefab(user.UserName, user.UserId, channelWithUsers.channelId, prefabCharacter, parentToPj, CreateVector2(x, y, 0));
-    //                }
-    //                else 
-    //                {
-    //                    parentToPj = GameObject.Find("ParentPj");
-    //                    if (parentToPj == null)
-    //                    {
-    //                        parentToPj = new("ParentPj");
-    //                        parentToPj.transform.parent = parentObject.transform;
-    //                    }
-    //                    userSpawn.InstantiateUserPrefab(user.UserName, user.UserId, channelWithUsers.channelId, prefabCharacter, parentToPj, CreateVector2(channel.transform.position.x, channel.transform.position.y, 0.7536f));
-    //                }
-    //            }
-    //        }
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        Debug.Log("Error al crear la instancia: " + ex.Message);
-    //    }
-    //}
-
     private Vector2 CreateVector2 (float x, float y, float rest, string channelId)
     {
         Tilemap channel = GameObject.Find(channelId).GetComponent<Tilemap>();
-        BoundsInt bounds = channel.cellBounds;
-        int width = bounds.size.x;
-        int height = bounds.size.y;
-        Debug.Log(width / 2);
-        Vector3Int centerCellPosition = new Vector3Int(width, height, 0);
+        Vector3Int centerCellPosition = new Vector3Int(0, 0, 0);
         Vector3 centerWorldPosition = channel.GetCellCenterWorld(centerCellPosition);
-        Vector2 center2D = new(centerWorldPosition.x, centerWorldPosition.y);
+        if(x != 0 || y != 0)
+        {
+            return new Vector2(x, y);
+        }
+        Vector2 center2D = new(centerWorldPosition.x - 0.007f, centerWorldPosition.y + 0.2524f);
         return center2D;
     }
 }
