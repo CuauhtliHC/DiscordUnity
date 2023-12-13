@@ -10,7 +10,7 @@ public class ProcessingData : MonoBehaviour
     {
         public string id;
         public string name;
-        public List<Coordinates> coordinates;
+        public List<Coordinates> coordinatesArray;
         public List<User> users;
     }
 
@@ -34,8 +34,8 @@ public class ProcessingData : MonoBehaviour
     [Serializable]
     public class Coordinates
     {
-        public float coordinateX;
-        public float coordinateY;
+        public int coordinateX;
+        public int coordinateY;
         public string tileName;
     }
 

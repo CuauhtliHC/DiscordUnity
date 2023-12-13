@@ -362,10 +362,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f94c3c37c8ff184ca64464b3d8e837a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabToSpawn: {fileID: 6924124059249347523, guid: d19b7a494fb5432468f78e414b2718e8, type: 3}
-  parentObject: {fileID: 1980778060}
-  prefabCharacter: {fileID: 274005593502977819, guid: c900c025dd573b942beb57ee33f4d30c, type: 3}
-  parentToPj: {fileID: 933650041}
 --- !u!1 &317897169
 GameObject:
   m_ObjectHideFlags: 0
@@ -1478,6 +1474,7 @@ GameObject:
   - component: {fileID: 1249042894}
   - component: {fileID: 1249042897}
   - component: {fileID: 1249042896}
+  - component: {fileID: 1249042898}
   m_Layer: 0
   m_Name: Scripts Spawn
   m_TagString: Untagged
@@ -1565,6 +1562,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00b3ff9e826826c4c87160505db49e2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1249042898
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1249042890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1877e7cf894117d479d894bebf24a1a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefabToSpawn: {fileID: 6924124059249347523, guid: d19b7a494fb5432468f78e414b2718e8, type: 3}
+  parentObject: {fileID: 1980778060}
+  prefabCharacter: {fileID: 274005593502977819, guid: c900c025dd573b942beb57ee33f4d30c, type: 3}
+  parentToPj: {fileID: 933650041}
 --- !u!1 &1344931677
 GameObject:
   m_ObjectHideFlags: 0

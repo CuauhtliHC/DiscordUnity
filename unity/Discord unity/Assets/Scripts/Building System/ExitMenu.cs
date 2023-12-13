@@ -47,9 +47,9 @@ public class ExitMenu : MonoBehaviour
         {
             dataVectors[child.name] = new List<object>();
             Tilemap tilemapComponent = child.GetComponent<Tilemap>(); 
-            for(int x = 0; x <= 4; x++)
+            for(int x = -2; x <= 2; x++)
             {
-                for(int y = 0; y <= 4; y++)
+                for(int y = -2; y <= 2; y++)
                 {
                     Vector3Int vec = new(x, y, 0);
                     TileBase tile = tilemapComponent.GetTile(vec);

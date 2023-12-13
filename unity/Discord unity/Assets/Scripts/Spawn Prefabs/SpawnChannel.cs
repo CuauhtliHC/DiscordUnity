@@ -17,7 +17,7 @@ public class SpawnChannel : MonoBehaviour
         userSpawn = FindObjectOfType<UserSpawn>();
         if (userSpawn == null)
         {
-            Debug.LogError("No se encontró un objeto UserSpawn en la escena.");
+            Debug.LogError("Not found User Spawn");
         }
     }
     public void InstantiateChannel(Queue<ProcessingData.ChannelData> channelsQueue)
@@ -35,6 +35,23 @@ public class SpawnChannel : MonoBehaviour
             channelData.ChannelId = channel.id;
             vectorY -= 3.492f;
             vectorX -= 2.0096f;
+            if(channel.coordinatesArray != null && channel.coordinatesArray.Count > 0)
+            {
+                foreach (ProcessingData.Coordinates coordinate in channel.coordinatesArray)
+                {
+                    Tile tile = Resources.Load<Tile>("Prefab/Floor/" + coordinate.tileName);
+                    if (tile != null)
+                    {
+                        Tilemap tilemap = prefabInstance.GetComponent<Tilemap>();
+                        Vector3Int cellPosition = new(coordinate.coordinateX, coordinate.coordinateY, 0);
+                        tilemap.SetTile(cellPosition, tile);
+                    }
+                    else
+                    {
+                        Debug.Log("Tile Not Found");
+                    }
+                };
+            }
             if (channel.users != null && channel.users.Count > 0)
             {
                 foreach (ProcessingData.User user in channel.users)
