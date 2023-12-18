@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.Rendering;
 
 public class UserSpawn : MonoBehaviour
 {
@@ -22,5 +23,6 @@ public class UserSpawn : MonoBehaviour
         textMeshProComponent.fontStyle = FontStyles.Bold;
         textMeshProComponent.transform.SetParent(prefabInstance.transform);
         textMeshProComponent.transform.position = positionText;
+        textMeshProGameObject.AddComponent<SortingGroup>().sortingLayerName = "NameUser";
     }
 }
