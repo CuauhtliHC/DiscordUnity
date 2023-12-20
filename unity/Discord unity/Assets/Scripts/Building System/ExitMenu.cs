@@ -46,7 +46,7 @@ public class ExitMenu : MonoBehaviour
         foreach (Transform child in parentChannel.transform)
         {
             dataVectors[child.name] = new List<object>();
-            Tilemap tilemapComponent = child.GetComponent<Tilemap>(); 
+            Tilemap tilemapComponent = child.GetComponent<Tilemap>();
             for(int x = -2; x <= 2; x++)
             {
                 for(int y = -2; y <= 2; y++)

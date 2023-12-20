@@ -11,6 +11,7 @@ const responseGetChannels = async (socket, data) => {
   const oldSocket = sockets.find(
     (socketArray) => socketArray.data.userId === userID,
   );
+  // Desconnection of old socket
   if (oldSocket) {
     oldSocket.emit(
       'closeReason',
