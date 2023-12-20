@@ -34,8 +34,8 @@ public class ConnectionWebSocket : MonoBehaviour
         {
             var data = new
             {
-                guildID = "1087941237924966420",
-                userID = "278345841734057994"
+                guildID = "321766793481945088", // discord lokthar
+                userID = "186251735642275841"  // el userId tuyo de discord
             };
             io.D.Emit("getChannels", data);
         });
