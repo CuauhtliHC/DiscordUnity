@@ -46,7 +46,10 @@ public class CharacterMovement : MonoBehaviour
         HandleReceiveMessage();
         MoveCharacter();
     }
-
+    /// <summary>
+    /// Metodo para mover personaje
+    /// </summary>
+    /// <param name="ctx">Obtiene valores de Mouse</param>
     public void HandleInput(InputAction.CallbackContext ctx)
     {
         if (!ctx.performed || isMoving) return;
@@ -58,7 +61,7 @@ public class CharacterMovement : MonoBehaviour
         Vector2 center2D = new(center.x, center.y);
         targetPosition = center2D;
         RaycastHit2D hit = Physics2D.Raycast(center2D, Vector2.zero);
-        if (userName == "278345841734057994" && hit.collider != null)
+        if (userName == "186251735642275841" && hit.collider != null)
         {
             string colliderName = hit.collider.gameObject.name;
             if (userInfo.inChannel == colliderName)
