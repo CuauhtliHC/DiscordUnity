@@ -52,6 +52,7 @@ public class CharacterMovement : MonoBehaviour
         if (!ctx.performed || isMoving) return;
         SpriteRenderer spriteRenderer = transform.GetComponent<SpriteRenderer>();
         if (spriteRenderer.color == transparentWhite) return;
+        Vector2 actualPosition = transform.position;
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
         Vector3Int cellPosition = grid.WorldToCell(mousePosition);
         Vector3 center = grid.GetCellCenterWorld(cellPosition);
@@ -63,6 +64,8 @@ public class CharacterMovement : MonoBehaviour
             string colliderName = hit.collider.gameObject.name;
             if (userInfo.inChannel == colliderName)
             {
+                APathFinder aPathFinder = transform.GetComponent<APathFinder>();
+                aPathFinder.Patfinding(colliderName, actualPosition, center2D);
                 EmitPlayerMovement();
                 MoveToTarget();
             }

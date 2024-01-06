@@ -52,6 +52,7 @@ public class SpawnChannel : MonoBehaviour
                     }
                 };
             }
+            prefabInstance.GetComponent<Tilemap>().CompressBounds();
             if (channel.users != null && channel.users.Count > 0)
             {
                 foreach (ProcessingData.User user in channel.users)
