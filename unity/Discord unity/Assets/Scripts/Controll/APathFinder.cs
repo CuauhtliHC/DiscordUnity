@@ -5,18 +5,14 @@ using UnityEngine.Tilemaps;
 
 public class APathFinder : MonoBehaviour
 {
-    public void Patfinding(string nameChannel, Vector2 initialCoo, Vector2 endCoo)
+    public List<(int, int)> Patfinding(string nameChannel, Vector2 initialCoo, Vector2 endCoo)
     {
         Tilemap fornitureChannel = GameObject.Find("Tilemap").GetComponent<Tilemap>();
-        List<(int, int)> openNodes;
-        List<(int, int)> closeNodes;
+        List<(int, int)> openNodes = new();
+        List<(int, int)> closeNodes = new();
+        List<(int, int)> path = new();
         openNodes = new List<(int, int)>();
-        closeNodes = new List<(int, int)>();
         Tilemap channel = GameObject.Find(nameChannel).GetComponent<Tilemap>();
-        int originX = (int)channel.origin.x;
-        int originY = (int)channel.origin.y;
-        int sizeX = (int)channel.size.x;
-        int sizeY = (int)channel.size.y;
         Vector3Int initialTile = channel.WorldToCell(initialCoo);
         Vector3Int endTile = channel.WorldToCell(endCoo);
         if (initialTile != endTile)
@@ -25,7 +21,11 @@ public class APathFinder : MonoBehaviour
         }
         else
         {
-            return;
+            List<(int, int)> returnPathInitial = new()
+            {
+                (initialTile.x, initialTile.y)
+            };
+            return returnPathInitial;
         }
         while (openNodes.Count > 0)
         {
@@ -37,7 +37,12 @@ public class APathFinder : MonoBehaviour
             // Paso 4: Verificar si se alcanzó el nodo final
             if (currentNode == (endTile.x, endTile.y))
             {
-                return;
+                foreach ((int, int) node in closeNodes)
+                {
+                    path.Add(node);
+                }
+                path.Add(currentNode);
+                break;
             }
 
             // Paso 5: Obtener los nodos adyacentes y agregarlos a la lista abierta
@@ -70,8 +75,9 @@ public class APathFinder : MonoBehaviour
             }
 
             // Agregar el nodo actual a la lista cerrada
-            closeNodes.Add(currentNode);
+            closeNodes.Add(currentNode);           
         }
+        return path;
     }
 
     private int GetLowestCostIndex(List<(int, int)> nodes, (int, int) endTile)

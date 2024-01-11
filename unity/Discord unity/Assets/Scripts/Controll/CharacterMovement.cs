@@ -1,7 +1,10 @@
+using System.Collections.Generic;
 using UnityEngine;
 using System.Runtime.InteropServices;
 using Firesplash.GameDevAssets.SocketIOPlus;
 using UnityEngine.InputSystem;
+using UnityEngine.Tilemaps;
+using Unity.VisualScripting;
 
 public class CharacterMovement : MonoBehaviour
 {
@@ -10,8 +13,9 @@ public class CharacterMovement : MonoBehaviour
     private bool isMoving = false;
     private string userName;
     private UserInfo userInfo;
-    private static readonly Color transparentWhite = new Color(1.0f, 1.0f, 1.0f, 0f);
+    private static readonly Color transparentWhite = new(1.0f, 1.0f, 1.0f, 0f);
     private SocketMessage messageReceived;
+    private List<(int, int)> path = new();
 
     [DllImport("__Internal")]
     private static extern string GetUserId();
@@ -65,7 +69,7 @@ public class CharacterMovement : MonoBehaviour
             if (userInfo.inChannel == colliderName)
             {
                 APathFinder aPathFinder = transform.GetComponent<APathFinder>();
-                aPathFinder.Patfinding(colliderName, actualPosition, center2D);
+                path = aPathFinder.Patfinding(colliderName, actualPosition, center2D);
                 EmitPlayerMovement();
                 MoveToTarget();
             }
@@ -104,8 +108,25 @@ public class CharacterMovement : MonoBehaviour
         if (isMoving)
         {
             float step = 5f * Time.deltaTime;
-            transform.position = Vector2.MoveTowards(transform.position, targetPosition, step);
-            if (Vector2.Distance(transform.position, targetPosition) < 0.001f)
+            if (path.Count != 0)
+            {
+                Tilemap channel = GameObject.Find(userInfo.inChannel).GetComponent<Tilemap>();
+                foreach ((int, int) node in path)
+                {
+                    Vector3Int vectorNode = new(node.Item1, node.Item2, 0);
+                    Vector3 tilePosition = channel.CellToWorld(vectorNode);                    
+                    Vector3Int cellPosition = grid.WorldToCell(tilePosition);
+                    Vector3 center = grid.GetCellCenterWorld(cellPosition);
+                    transform.position = Vector3.MoveTowards(transform.position, center, step);
+                    if (Vector3.Distance(transform.position, center) < 0.001f)
+                    {
+                        // Llegaste al centro de la tile, ahora mueve el personaje a la siguiente posición en path
+                        path.RemoveAt(0);
+                    }
+                    break;
+                }
+            } 
+            else if (Vector2.Distance(transform.position, targetPosition) < 0.001f)
             {
                 isMoving = false;
             }
