@@ -4,7 +4,6 @@ using System.Runtime.InteropServices;
 using Firesplash.GameDevAssets.SocketIOPlus;
 using UnityEngine.InputSystem;
 using UnityEngine.Tilemaps;
-using Unity.VisualScripting;
 
 public class CharacterMovement : MonoBehaviour
 {
@@ -56,20 +55,20 @@ public class CharacterMovement : MonoBehaviour
         if (!ctx.performed || isMoving) return;
         SpriteRenderer spriteRenderer = transform.GetComponent<SpriteRenderer>();
         if (spriteRenderer.color == transparentWhite) return;
-        Vector2 actualPosition = transform.position;
+        Vector2 currentPosition = transform.position;
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
         Vector3Int cellPosition = grid.WorldToCell(mousePosition);
         Vector3 center = grid.GetCellCenterWorld(cellPosition);
         Vector2 center2D = new(center.x, center.y);
         targetPosition = center2D;
         RaycastHit2D hit = Physics2D.Raycast(center2D, Vector2.zero);
-        if (userName == "278345841734057994" && hit.collider != null)
+        if (userName == GetUserId() && hit.collider != null)
         {
             string colliderName = hit.collider.gameObject.name;
             if (userInfo.inChannel == colliderName)
             {
                 APathFinder aPathFinder = transform.GetComponent<APathFinder>();
-                path = aPathFinder.Patfinding(colliderName, actualPosition, center2D);
+                path = aPathFinder.Patfinding(colliderName, currentPosition, center2D);
                 EmitPlayerMovement();
                 MoveToTarget();
             }
@@ -83,7 +82,7 @@ public class CharacterMovement : MonoBehaviour
             var data = new
             {
                 targetPosition = targetPosition.ToString(),
-                userID = "278345841734057994"
+                userID = GetUserId()
             };
             io.D.Emit("playerMovement", data);
         }
@@ -93,11 +92,15 @@ public class CharacterMovement : MonoBehaviour
     {
         if (messageReceived != null && transform.name == messageReceived.userID)
         {
+            APathFinder aPathFinder = transform.GetComponent<APathFinder>();
+            Vector2 currentPosition = transform.position;
             Vector3 positionPlayer = new(messageReceived.targetPositionX, messageReceived.targetPositionY);
             Vector3Int cellPosition = grid.WorldToCell(positionPlayer);
             Vector3 center = grid.GetCellCenterWorld(cellPosition);
             Vector2 center2D = new(center.x, center.y);
             targetPosition = center2D;
+            string colliderName = userInfo.inChannel;
+            path = aPathFinder.Patfinding(colliderName, currentPosition, center2D);
             MoveToTarget();
             messageReceived = null;
         }
