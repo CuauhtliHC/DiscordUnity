@@ -7,10 +7,12 @@ public class SpawnChannel : MonoBehaviour
 
     private UserSpawn userSpawn;
 
-    public GameObject prefabToSpawn;
-    public GameObject parentObject;
+    public GameObject prefabChannelSpawn;
+    public GameObject parentChannelFloor;
     public GameObject prefabCharacter;
     public GameObject parentToPj;
+    public GameObject parentChannelFurniture;
+    public GameObject prefabTilemapFurniture;
 
     void Start()
     {
@@ -27,12 +29,18 @@ public class SpawnChannel : MonoBehaviour
         {
             ProcessingData.ChannelData channel = channelsQueue.Dequeue();
             Vector2 position = new(vectorY, vectorX);
-            GameObject prefabInstance = Instantiate(prefabToSpawn, position, Quaternion.identity);
-            prefabInstance.transform.parent = parentObject.transform;
-            prefabInstance.name = channel.id;
-            ChannelInfo channelData = prefabInstance.AddComponent<ChannelInfo>();
+            GameObject prefabChannelFloorInstance = Instantiate(prefabChannelSpawn, position, Quaternion.identity);
+            GameObject prefabChannelFurnitureInstance = Instantiate(prefabTilemapFurniture, position, Quaternion.identity);
+            prefabChannelFloorInstance.transform.parent = parentChannelFloor.transform;
+            prefabChannelFurnitureInstance.transform.parent = parentChannelFurniture.transform;
+            prefabChannelFloorInstance.name = channel.id;
+            prefabChannelFurnitureInstance.name = channel.id + "_furniture";
+            ChannelInfo channelData = prefabChannelFloorInstance.AddComponent<ChannelInfo>();
+            ChannelInfo channelFurnitureData = prefabChannelFurnitureInstance.AddComponent<ChannelInfo>();
             channelData.ChannelName = channel.name;
+            channelFurnitureData.ChannelName = channel.name;
             channelData.ChannelId = channel.id;
+            channelFurnitureData.ChannelId = channel.id;
             vectorY -= 3.492f;
             vectorX -= 2.0096f;
             if(channel.coordinatesArray != null && channel.coordinatesArray.Count > 0)
@@ -42,7 +50,7 @@ public class SpawnChannel : MonoBehaviour
                     Tile tile = Resources.Load<Tile>("Prefab/Floor/" + coordinate.tileName);
                     if (tile != null)
                     {
-                        Tilemap tilemap = prefabInstance.GetComponent<Tilemap>();
+                        Tilemap tilemap = prefabChannelFloorInstance.GetComponent<Tilemap>();
                         Vector3Int cellPosition = new(coordinate.coordinateX, coordinate.coordinateY, 0);
                         tilemap.SetTile(cellPosition, tile);
                     }
@@ -52,7 +60,7 @@ public class SpawnChannel : MonoBehaviour
                     }
                 };
             }
-            prefabInstance.GetComponent<Tilemap>().CompressBounds();
+            prefabChannelFloorInstance.GetComponent<Tilemap>().CompressBounds();
             if (channel.users != null && channel.users.Count > 0)
             {
                 foreach (ProcessingData.User user in channel.users)

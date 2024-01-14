@@ -7,7 +7,7 @@ public class APathFinder : MonoBehaviour
 {
     public List<(int, int)> Patfinding(string nameChannel, Vector2 initialCoo, Vector2 endCoo)
     {
-        Tilemap fornitureChannel = GameObject.Find("Tilemap").GetComponent<Tilemap>();
+        Tilemap fornitureChannel = GameObject.Find(nameChannel + "_furniture").GetComponent<Tilemap>();
         List<(int, int)> openNodes = new();
         List<(int, int)> closeNodes = new();
         List<(int, int)> path = new();
