@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using Firesplash.GameDevAssets.SocketIOPlus;
 using UnityEngine.InputSystem;
 using UnityEngine.Tilemaps;
+using UnityEngine.EventSystems;
 
 public class CharacterMovement : MonoBehaviour
 {
@@ -52,6 +53,7 @@ public class CharacterMovement : MonoBehaviour
 
     public void HandleInput(InputAction.CallbackContext ctx)
     {
+        if (EventSystem.current.IsPointerOverGameObject()) return;
         if (!ctx.performed || isMoving) return;
         SpriteRenderer spriteRenderer = transform.GetComponent<SpriteRenderer>();
         if (spriteRenderer.color == transparentWhite) return;
