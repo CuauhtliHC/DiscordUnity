@@ -1,6 +1,6 @@
-const { Coordinates } = require('../models/index');
+const { Coordinates, CoordinatesFurniture } = require('../models/index');
 
-const assingCoordinatesToChannel = async (channels, data) => {
+const assingCoordinatesToChannel = async (channels, data, dataType) => {
   for (const [key, value] of Object.entries(data)) {
     const channel = channels.find((channelData) => channelData.id === key);
     value.forEach(async (coordinate) => {
@@ -8,12 +8,14 @@ const assingCoordinatesToChannel = async (channels, data) => {
         coordinate.X,
         coordinate.Y,
         channel,
+        dataType,
       );
       if (!coordinateInDb) {
         const coordinateCreate = await createCoordinate(
           coordinate.X,
           coordinate.Y,
           coordinate.tileName,
+          dataType,
         );
         await channel.addCoordinate(coordinateCreate);
       } else {
@@ -22,6 +24,7 @@ const assingCoordinatesToChannel = async (channels, data) => {
           coordinate.Y,
           coordinate.tileName,
           channel,
+          dataType,
         );
       }
     });
@@ -32,8 +35,17 @@ const checkExistCoordinateInChannel = async (
   coordinateX,
   coordinateY,
   channel,
+  dataType,
 ) => {
-  const coordinate = await Coordinates.findOne({
+  let Model;
+  if (dataType === 'Floor') {
+    Model = Coordinates;
+  } else if (dataType === 'Furniture') {
+    Model = CoordinatesFurniture;
+  } else {
+    throw new Error('Tipo de datos no reconocido');
+  }
+  const coordinate = await Model.findOne({
     where: {
       coordinateX,
       coordinateY,
@@ -46,8 +58,21 @@ const checkExistCoordinateInChannel = async (
   return coordinate;
 };
 
-const createCoordinate = async (coordinateX, coordinateY, tileName) => {
-  const coordinate = await Coordinates.create({
+const createCoordinate = async (
+  coordinateX,
+  coordinateY,
+  tileName,
+  dataType,
+) => {
+  let Model;
+  if (dataType === 'Floor') {
+    Model = Coordinates;
+  } else if (dataType === 'Furniture') {
+    Model = CoordinatesFurniture;
+  } else {
+    throw new Error('Tipo de datos no reconocido');
+  }
+  const coordinate = await Model.create({
     coordinateX,
     coordinateY,
     tileName,
@@ -60,8 +85,17 @@ const updateCoordinate = async (
   coordinateY,
   tileName,
   channel,
+  dataType,
 ) => {
-  await Coordinates.update(
+  let Model;
+  if (dataType === 'Floor') {
+    Model = Coordinates;
+  } else if (dataType === 'Furniture') {
+    Model = CoordinatesFurniture;
+  } else {
+    throw new Error('Tipo de datos no reconocido');
+  }
+  await Model.update(
     { tileName: tileName },
     {
       where: {

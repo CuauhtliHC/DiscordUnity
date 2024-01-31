@@ -413,7 +413,7 @@ GameObject:
   - component: {fileID: 339835774}
   - component: {fileID: 339835773}
   m_Layer: 5
-  m_Name: ButtonForniture
+  m_Name: Button_Furniture
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -452,8 +452,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdc7cc03644c88f40805e33ed974fb4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isClicked: 0
-  anotherButtonMenu: {fileID: 1636020119}
 --- !u!114 &339835774
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2271,7 +2269,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a13e8726e7725544960eff9d9ebb6bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textures:
+  floorTextures:
   - {fileID: 21300000, guid: 7c411baa1396f054b8f9d432a4e102cf, type: 3}
   - {fileID: 21300000, guid: 980cf7948765d0940aa2b001dcd4d2d9, type: 3}
   - {fileID: 21300000, guid: 2e24c074b472e674e9f8ba85c50ba24c, type: 3}
@@ -2305,8 +2303,6 @@ MonoBehaviour:
   buttonPrefab: {fileID: 6443923872986812581, guid: e4f1636d2b64d7f499a71fc01c0a0008, type: 3}
   horizontalZone: {fileID: 317897169}
   buttonWidth: 59.4
-  buttonFurniture: {fileID: 339835771}
-  buttonFloor: {fileID: 1636020119}
 --- !u!114 &1629193759
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2335,7 +2331,7 @@ GameObject:
   - component: {fileID: 1636020122}
   - component: {fileID: 1636020121}
   m_Layer: 5
-  m_Name: ButtonFloor
+  m_Name: Button_Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2374,8 +2370,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdc7cc03644c88f40805e33ed974fb4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isClicked: 0
-  anotherButtonMenu: {fileID: 339835771}
 --- !u!114 &1636020122
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2708,6 +2702,7 @@ MonoBehaviour:
   prefabToBuild: {fileID: 0}
   parentToPj: {fileID: 933650041}
   parentChannel: {fileID: 1466362236}
+  parentChannelFurniture: {fileID: 580223899}
   io: {fileID: 0}
 --- !u!114 &1851842586
 MonoBehaviour:

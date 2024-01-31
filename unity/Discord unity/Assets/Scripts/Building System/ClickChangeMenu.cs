@@ -4,19 +4,13 @@ using UnityEngine;
 
 public class ClickChangeMenu : MonoBehaviour
 {
-    public bool isClicked = false;
-    public GameObject anotherButtonMenu;
-
-    void Start()
+    GameObject row;
+    private void Start()
     {
-        if(transform.name == "ButtonFloor")
-        {
-            isClicked = true;
-        }
+        row = GameObject.Find("Row");
     }
     public void IWasClicked()
     {
-        isClicked = true;
-        anotherButtonMenu.GetComponent<ClickChangeMenu>().isClicked = false;
+        row.GetComponent<AddingButtons>().Menu = transform.name[(transform.name.IndexOf("_") + 1)..].ToLower();
     }
 }

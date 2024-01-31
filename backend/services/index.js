@@ -9,11 +9,11 @@ const {
 } = require('./serviceCoordinates');
 const { getOrCreateGuild } = require('./serviceGuild');
 
-const proccessData = async (data, guildId, channelsId) => {
+const proccessData = async (data, guildId, channelsId, dataType) => {
   const guild = await getOrCreateGuild(guildId);
   if (guild) {
     const channels = await assingChannelsToGuild(guild, channelsId);
-    assingCoordinatesToChannel(channels, data);
+    assingCoordinatesToChannel(channels, data, dataType);
   }
 };
 

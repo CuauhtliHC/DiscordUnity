@@ -32,7 +32,7 @@ const server = http.createServer(app);
 app.listen(3001, async () => {
   console.log('Server running on port 3001');
   try {
-    await db.sync({ force: false });
+    await db.sync({ force: true });
     console.log('Connection to database has been established successfully.');
   } catch (error) {
     console.error('Unable to connect to the database:', error);
