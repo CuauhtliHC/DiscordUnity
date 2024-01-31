@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class MoveCamera : MonoBehaviour
@@ -18,6 +19,7 @@ public class MoveCamera : MonoBehaviour
 
     public void OnDrag(InputAction.CallbackContext ctx)
     {
+        if(EventSystem.current.IsPointerOverGameObject()) return;
         if (ctx.performed) _origin = GetMousePosition;
         _isDragging = ctx.started || ctx.performed;
     }

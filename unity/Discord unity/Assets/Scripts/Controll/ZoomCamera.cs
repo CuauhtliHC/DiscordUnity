@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class ZoomCamera : MonoBehaviour
@@ -18,6 +19,7 @@ public class ZoomCamera : MonoBehaviour
 
     public void Zoom(InputAction.CallbackContext ctx)
     {
+        if (EventSystem.current.IsPointerOverGameObject()) return;
         float value = ctx.ReadValue<Vector2>().y / 100f;
 
         if(Mathf.Abs(value) > 0.1f)

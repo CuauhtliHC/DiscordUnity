@@ -11,9 +11,11 @@ public class ClickButtonTile : MonoBehaviour
     public GameObject preInstance;
     public GameObject prefabToBuild;
     public RaycastHit2D hit;
+    public GameObject row;
 
     private void Start()
     {
+        row = GameObject.Find("Row");
         grid = FindObjectOfType<Grid>();
     }
     public void Update()
@@ -30,15 +32,27 @@ public class ClickButtonTile : MonoBehaviour
     {
         if (hit.collider != null)
         {
-            Tilemap tilemap = hit.collider.gameObject.GetComponent<Tilemap>();
-            Vector3Int cellPosition = tilemap.WorldToCell(GetPositionMouse(0));
-            tilemap.SetTile(cellPosition, tileFound);
+            string menu = row.GetComponent<AddingButtons>().Menu;
+            if (menu == "floor")
+            {
+                Tilemap tilemap = hit.collider.gameObject.GetComponent<Tilemap>();
+                Vector3Int cellPosition = tilemap.WorldToCell(GetPositionMouse(0));
+                tilemap.SetTile(cellPosition, tileFound);
+            }
+            else
+            {
+                Tilemap tilemap = GameObject.Find(hit.collider.gameObject.name + "_furniture").GetComponent<Tilemap>();
+                Vector3Int cellPosition = tilemap.WorldToCell(GetPositionMouse(0));
+                tilemap.SetTile(cellPosition, tileFound);
+            }
         }
     }
     public void IWasClicked()
     {
-        Tile tile = Resources.Load<Tile>("Prefab/Floor/" + transform.name);
-        Sprite sprite = Resources.Load<Sprite>("Sprites/Floor/" + transform.name);
+        string menu = row.GetComponent<AddingButtons>().Menu;
+        string uppercasedMenu = char.ToUpper(menu[0]) + menu[1..];
+        Tile tile = Resources.Load<Tile>("Prefab/" + uppercasedMenu + "/" + transform.name);
+        Sprite sprite = Resources.Load<Sprite>("Sprites/" + uppercasedMenu + "/" + transform.name);
         if (tile != null && sprite != null)
         {
             prefabToBuild = GameObject.Find("preInstance");
