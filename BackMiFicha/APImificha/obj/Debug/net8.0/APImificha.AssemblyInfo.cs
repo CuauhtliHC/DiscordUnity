@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("APImificha")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+dd6261d7d66e559793e98c6d584abbceb23eea01")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9ad3c0dd51762e551bfcbfe84e0d8fea70c725e6")]
 [assembly: System.Reflection.AssemblyProductAttribute("APImificha")]
 [assembly: System.Reflection.AssemblyTitleAttribute("APImificha")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
