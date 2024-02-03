@@ -17,7 +17,11 @@ const assingCoordinatesToChannel = async (channels, data, dataType) => {
           coordinate.tileName,
           dataType,
         );
-        await channel.addCoordinate(coordinateCreate);
+        if (dataType === 'Furniture') {
+          await channel.addCoordinatesFurniture(coordinateCreate);
+        } else if (dataType === 'Floor') {
+          await channel.addCoordinate(coordinateCreate);
+        }
       } else {
         await updateCoordinate(
           coordinate.X,
@@ -43,7 +47,7 @@ const checkExistCoordinateInChannel = async (
   } else if (dataType === 'Furniture') {
     Model = CoordinatesFurniture;
   } else {
-    throw new Error('Tipo de datos no reconocido');
+    throw new Error('Unrecognized data type');
   }
   const coordinate = await Model.findOne({
     where: {
@@ -108,12 +112,17 @@ const updateCoordinate = async (
 };
 
 const getAllOfCoordinates = async (channel) => {
+  const coordinatesFurnitures = await CoordinatesFurniture.findAll({
+    where: {
+      ChannelId: channel.id,
+    },
+  });
   const coordinates = await Coordinates.findAll({
     where: {
       ChannelId: channel.id,
     },
   });
-  return coordinates;
+  return { Floor: coordinates, Furniture: coordinatesFurnitures };
 };
 
 module.exports = {

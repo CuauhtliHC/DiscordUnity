@@ -21,6 +21,7 @@ const responseGetChannels = async (socket, data) => {
   }
   const channels = await getGuildChannels(guildID);
   const { channelData } = getOnlineUsers(channels, socketsInRoom, dataChannels);
+  console.log(channelData);
   socket.data.userId = data.userID;
   socket.join(guildID);
   socket.emit('getChannels', {

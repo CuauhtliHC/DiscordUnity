@@ -22,7 +22,16 @@ const getOnlineUsers = (channels, socketsInRoom, dataChannels) => {
       return {
         id: voiceChannel.id,
         name: voiceChannel.name,
-        coordinatesArray: dataChannels[voiceChannel.id] ?? null,
+        coordinatesData: {
+          Floor:
+            dataChannels[voiceChannel.id].Floor.length === 0
+              ? null
+              : dataChannels[voiceChannel.id].Floor,
+          Furniture:
+            dataChannels[voiceChannel.id].Furniture.length === 0
+              ? null
+              : dataChannels[voiceChannel.id].Furniture,
+        },
         users: usersInChannel,
       };
     });
