@@ -6,6 +6,7 @@ const { responseUpdateGuild } = require('./updateGuild');
 const handleIoConnection = (socket) => {
   console.log('New connection socket io');
   socket.on('getChannels', async (data) => {
+    //getAllOfCoordinates -----> getDataOfGuild ------> getOnlineUsers
     await responseGetChannels(socket, data);
   });
   socket.on('playerMovement', async (data) => {

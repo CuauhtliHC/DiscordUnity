@@ -43,14 +43,31 @@ public class SpawnChannel : MonoBehaviour
             channelFurnitureData.ChannelId = channel.id;
             vectorY -= 3.492f;
             vectorX -= 2.0096f;
-            if(channel.coordinatesArray != null && channel.coordinatesArray.Count > 0)
+            if(channel.coordinatesData.Floor != null && channel.coordinatesData.Floor.Count > 0)
             {
-                foreach (ProcessingData.Coordinates coordinate in channel.coordinatesArray)
+                foreach (ProcessingData.Coordinates coordinate in channel.coordinatesData.Floor)
                 {
                     Tile tile = Resources.Load<Tile>("Prefab/Floor/" + coordinate.tileName);
                     if (tile != null)
                     {
                         Tilemap tilemap = prefabChannelFloorInstance.GetComponent<Tilemap>();
+                        Vector3Int cellPosition = new(coordinate.coordinateX, coordinate.coordinateY, 0);
+                        tilemap.SetTile(cellPosition, tile);
+                    }
+                    else
+                    {
+                        Debug.Log("Tile Not Found");
+                    }
+                };
+            }
+            if (channel.coordinatesData.Furniture != null && channel.coordinatesData.Furniture.Count > 0)
+            {
+                foreach (ProcessingData.Coordinates coordinate in channel.coordinatesData.Furniture)
+                {
+                    Tile tile = Resources.Load<Tile>("Prefab/Furniture/" + coordinate.tileName);
+                    if (tile != null)
+                    {
+                        Tilemap tilemap = prefabChannelFurnitureInstance.GetComponent<Tilemap>();
                         Vector3Int cellPosition = new(coordinate.coordinateX, coordinate.coordinateY, 0);
                         tilemap.SetTile(cellPosition, tile);
                     }

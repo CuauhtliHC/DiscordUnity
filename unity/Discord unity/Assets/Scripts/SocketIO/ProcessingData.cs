@@ -10,7 +10,7 @@ public class ProcessingData : MonoBehaviour
     {
         public string id;
         public string name;
-        public List<Coordinates> coordinatesArray;
+        public DataCoordinates coordinatesData;
         public List<User> users;
     }
 
@@ -37,6 +37,12 @@ public class ProcessingData : MonoBehaviour
         public int coordinateX;
         public int coordinateY;
         public string tileName;
+    }
+
+    public class DataCoordinates
+    {
+        public List<Coordinates> Floor;
+        public List<Coordinates> Furniture;
     }
 
     public readonly Queue<ChannelData> channelsQueue = new();
