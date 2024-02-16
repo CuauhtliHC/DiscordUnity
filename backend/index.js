@@ -1,7 +1,8 @@
 const { voiceStateUpdateIo } = require('./discordApi/voiceStateUpdate');
 const { login, client } = require('./discordbot/botOn');
 const { handleIoConnection } = require('./ioEvents/connection');
-const { server, io } = require('./server');
+const { server } = require('./server');
+const { io } = require('./serverIO');
 
 client.once('ready', () => {
   console.log(`Logged in as ${client.user.tag}`);

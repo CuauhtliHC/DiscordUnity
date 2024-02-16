@@ -2,7 +2,6 @@ const http = require('http');
 const { config } = require('dotenv');
 const express = require('express');
 const cors = require('cors');
-const { Server } = require('socket.io');
 const db = require('./config/db');
 const { Channels, Coordinates, Guilds } = require('./models');
 
@@ -39,13 +38,4 @@ app.listen(3001, async () => {
   }
 });
 
-const io = new Server({
-  cors: {
-    origin: '*',
-    methods: ['GET', 'POST'],
-  },
-});
-
-io.listen(8080);
-
-module.exports = { server, io };
+module.exports = { server };

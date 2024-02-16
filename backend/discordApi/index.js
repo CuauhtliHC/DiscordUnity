@@ -14,15 +14,28 @@ const getGuildChannels = async (guildId) => {
   return guild.channels.cache;
 };
 
-const checkBotThere = async (guildId) => {
+const checkBotThere = (guildId) => {
   try {
-    return Boolean(client.guilds.cache.find((g) => g.id === guildId));
+    const listGuild = client.guilds.cache;
+    return listGuild.find((g) => g.id === guildId) ? true : false;
   } catch (error) {
     console.log(error);
   }
 };
 
+const checkUserConnectChannel = async (idUser, listGuilds) => {
+  const idGuild = listGuilds
+    .filter((guild) => checkBotThere(guild.id))
+    .find((guild) => {
+      const guildCache = client.guilds.cache.get(guild.id);
+      const member = guildCache.members.cache.get(idUser);
+      return member !== undefined;
+    });
+  const user = client.users.cache.get(idUser);
+};
+
 module.exports = {
   getGuildChannels,
   checkBotThere,
+  checkUserConnectChannel,
 };
