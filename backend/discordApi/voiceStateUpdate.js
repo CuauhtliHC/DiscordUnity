@@ -1,4 +1,4 @@
-const { io } = require('../server.js');
+const { io } = require('../serverIO.js');
 
 const emitEvent = (guildId, eventName, member, channel) => {
   io.to(guildId).emit(eventName, {
